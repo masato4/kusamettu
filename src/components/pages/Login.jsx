@@ -4,11 +4,14 @@ import { Button } from "@mantine/core";
 import { auth } from "../../firebase";
 import LogedIn from "./LogedIn";
 
+import NotLogin from "../views/NotLogin";
+
+
 export const Login = () => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState();
 
-  const siginin = () => {
+  const login = () => {
     const provider = new GithubAuthProvider();
     provider.addScope("repo");
     signInWithPopup(auth, provider)
@@ -37,17 +40,16 @@ export const Login = () => {
     <>
       {token === "" ? (
         <>
-          <div>
-            <Button className="text" onClick={siginin}>
-              Login
-            </Button>
-          </div>
-          <div className="text-lime-400">aaaaaaa</div>
-          <button className="btn">Button</button>
+          <NotLogin
+            login={() => {
+              login();
+            }}
+          />
+
         </>
       ) : (
         <>
-          <LogedIn user={user} setToken={setToken} />
+          <LogedIn token={token} user={user} setToken={setToken} />
         </>
       )}
     </>
