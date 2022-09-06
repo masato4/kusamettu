@@ -6,6 +6,7 @@ import UserInfo from "./UserInfo";
 import { doc, getDoc } from "firebase/firestore";
 import Main from "../views/Main";
 
+
 const LogedIn = ({ token, user, setToken }) => {
   const [userInfo, setUserInfo] = useState("");
   const check = async () => {
@@ -21,6 +22,7 @@ const LogedIn = ({ token, user, setToken }) => {
   useEffect(() => {
     check();
   }, []);
+
   return (
     <>
       {userInfo !== "yet" ? (
@@ -66,6 +68,6 @@ const LogedIn = ({ token, user, setToken }) => {
       )}
     </>
   );
-};
+}
 
 export default LogedIn;

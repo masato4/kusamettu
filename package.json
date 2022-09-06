@@ -16,6 +16,7 @@
     "@emotion/react": "^11.10.4",
     "@mantine/core": "^5.2.5",
     "@mantine/hooks": "^5.2.5",
+    "daisyui": "^2.25.0",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-plugin-prettier": "^4.2.1",
     "firebase": "^9.9.4",

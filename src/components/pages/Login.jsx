@@ -3,7 +3,10 @@ import { signInWithPopup, GithubAuthProvider, signOut } from "firebase/auth";
 import { Button } from "@mantine/core";
 import { auth } from "../../firebase";
 import LogedIn from "./LogedIn";
+
 import NotLogin from "../views/NotLogin";
+
+
 export const Login = () => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState();
@@ -27,7 +30,7 @@ export const Login = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         // The email of the user's account used.
-        const email = error.customData.email;
+        const { email } = error.customData;
         // The AuthCredential type that was used.
         const credential = GithubAuthProvider.credentialFromError(error);
         // ...
@@ -42,6 +45,7 @@ export const Login = () => {
               login();
             }}
           />
+
         </>
       ) : (
         <>
@@ -50,4 +54,4 @@ export const Login = () => {
       )}
     </>
   );
-};
+}
