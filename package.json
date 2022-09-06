@@ -13,6 +13,9 @@
     "development": "yarn lintfix & yarn dev"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@mantine/core": "^5.2.5",
+    "@mantine/hooks": "^5.2.5",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-plugin-prettier": "^4.2.1",
     "firebase": "^9.9.4",
