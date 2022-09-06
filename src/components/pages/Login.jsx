@@ -8,7 +8,7 @@ import NotLogin from "../views/NotLogin";
 
 
 export const Login = () => {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState("あ");
   const [user, setUser] = useState();
 
   const login = () => {
