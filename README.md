@@ -38,7 +38,10 @@
 
 ### 開発ようサーバーの起動
 ```yarn dev```
-自動でlintfixを実行するようにしています
+lintとprettierを適応せずに開発サーバーを起動
+
+```yarn development```
+自動でlintfixを実行して開発サーバーを起動
 
 ### lint と fmt
 ```yarn lint```
