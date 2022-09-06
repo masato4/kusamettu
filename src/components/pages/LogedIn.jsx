@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { signOut } from "firebase/auth";
 import { AppShell, Button, Group, Header, Navbar, Text } from "@mantine/core";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
+import { doc, getDoc } from "firebase/firestore";
+import Main from "../views/Main";
 
-const LogedIn = ({ user, setToken }) => {
-  const [userInfo, setUserInfo] = useState();
+const LogedIn = ({ token, user, setToken }) => {
+  const [userInfo, setUserInfo] = useState("");
+  const check = async () => {
+    const docRef = doc(db, "users", user.uid);
+    await getDoc(docRef)
+      .then((data) => {
+        data.exists() ? setUserInfo(data.data()) : setUserInfo("yet");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    check();
+  }, []);
   return (
     <>
-      {!userInfo ? (
+      {userInfo !== "yet" ? (
         <AppShell
           padding="md"
           // navbar={
@@ -23,7 +38,7 @@ const LogedIn = ({ user, setToken }) => {
                   position="apart"
                   style={{ marginLeft: 20, marginRight: 20 }}
                 >
-                  <Text>{user.displayName}</Text>
+                  {/* <Text>{user.displayName}</Text> */}
                   <Button
                     onClick={() => {
                       signOut(auth).then((result) => {
@@ -39,14 +54,14 @@ const LogedIn = ({ user, setToken }) => {
             </Header>
           }
         >
-          <div>Logedin</div>
+          <Main />
 
-          <div>{user.displayName}</div>
+          {/* <div>{user.displayName}</div> */}
           {/* Your application here */}
         </AppShell>
       ) : (
         <>
-          <UserInfo />
+          <UserInfo token={token} user={user} />
         </>
       )}
     </>
