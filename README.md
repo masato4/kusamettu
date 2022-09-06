@@ -31,4 +31,14 @@
 ## 公開URL
 [KUSAMETs](https://)
 
-## 
+## React 開発環境起動方法(後で削除するか移動してください)
+
+### install
+```yarn```
+
+### 開発ようサーバーの起動
+```yarn dev```
+
+### lint と fmt
+```yarn lintfix```
+のちに `yarn dev` したときに自動で実行できるようにする
