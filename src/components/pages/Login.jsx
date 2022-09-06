@@ -37,8 +37,11 @@ export const Login = () => {
       {token === "" ? (
         <>
           <div>
-            <Button onClick={siginin}>Login</Button>
+            <Button className="text" onClick={siginin}>
+              Login
+            </Button>
           </div>
+          <div className="text-red-900">aaaaaaa</div>
         </>
       ) : (
         <>
