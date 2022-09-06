@@ -29,6 +29,6 @@
 
 
 ## 公開URL
-[アプリ名](https://)
+[KUSAMETs](https://)
 
 ## 
