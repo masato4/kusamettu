@@ -38,7 +38,14 @@
 
 ### 開発ようサーバーの起動
 ```yarn dev```
+自動でlintfixを実行するようにしています
 
 ### lint と fmt
+```yarn lint```
+lintの適応
+
 ```yarn lintfix```
-のちに `yarn dev` したときに自動で実行できるようにする
+lintの自動修正実行されるはず
+
+```yarn fmt```
+フォーマットが実行される
