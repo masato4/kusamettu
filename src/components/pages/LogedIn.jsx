@@ -1,24 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import { signOut } from "firebase/auth";
-import { Button } from "@mantine/core";
+import { AppShell, Button, Group, Header, Navbar, Text } from "@mantine/core";
 import { auth } from "../../firebase";
+import UserInfo from "./UserInfo";
 
 const LogedIn = ({ user, setToken }) => {
+  const [userInfo, setUserInfo] = useState();
   return (
     <>
-      <div>Logedin</div>
+      {!userInfo ? (
+        <AppShell
+          padding="md"
+          // navbar={
+          //   <Navbar width={{ base: 300 }} height={500} p="xs">
+          //     {/* Navbar content */}
+          //   </Navbar>
+          // }
+          header={
+            <Header height={60} p="xs">
+              <>
+                <Group
+                  position="apart"
+                  style={{ marginLeft: 20, marginRight: 20 }}
+                >
+                  <Text>{user.displayName}</Text>
+                  <Button
+                    onClick={() => {
+                      signOut(auth).then((result) => {
+                        console.log(result);
+                        setToken("");
+                      });
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </Group>
+              </>
+            </Header>
+          }
+        >
+          <div>Logedin</div>
 
-      <Button
-        onClick={() => {
-          signOut(auth).then((result) => {
-            console.log(result);
-            setToken("");
-          });
-        }}
-      >
-        Logout
-      </Button>
-      <div>{user.displayName}</div>
+          <div>{user.displayName}</div>
+          {/* Your application here */}
+        </AppShell>
+      ) : (
+        <>
+          <UserInfo />
+        </>
+      )}
     </>
   );
 };
