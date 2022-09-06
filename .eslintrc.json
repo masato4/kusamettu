@@ -16,5 +16,9 @@
     "react/react-in-jsx-scope": "off",
     // ESLint と Prettierが競合するためpluginを導入しました
     "prettier/prettier": "error"
-  }
+  },
+  "react/function-component-definition": [
+    2,
+    { "namedComponents": "arrow-function" }
+  ]
 }

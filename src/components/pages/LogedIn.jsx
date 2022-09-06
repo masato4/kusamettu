@@ -4,7 +4,7 @@ import { AppShell, Button, Group, Header, Navbar, Text } from "@mantine/core";
 import { auth } from "../../firebase";
 import UserInfo from "./UserInfo";
 
-const LogedIn = ({ user, setToken }) => {
+function LogedIn({ user, setToken }) {
   const [userInfo, setUserInfo] = useState();
   return (
     <>
@@ -51,6 +51,6 @@ const LogedIn = ({ user, setToken }) => {
       )}
     </>
   );
-};
+}
 
 export default LogedIn;
