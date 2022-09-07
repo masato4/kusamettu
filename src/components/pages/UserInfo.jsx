@@ -13,7 +13,7 @@ const UserInfo = ({
   userName,
 }) => {
   const [repo, setRepo] = useState(userInfo?.repo || "");
-  const [weight, setWeight] = useState(userInfo?.weight);
+  const [weight, setWeight] = useState(userInfo?.weight || "");
   const [name, setName] = useState(userName);
   const [met, setMets] = useState();
   // const docref = doc(db, "users", user.uid);
@@ -78,6 +78,7 @@ const UserInfo = ({
         />
         {/* <Autocomplete /> */}
         <Button
+          disabled={repo === "" || weight === "" || name === ""}
           onClick={() => {
             addUserInfo();
             check();

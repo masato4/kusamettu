@@ -1,16 +1,32 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { AppShell, Button, Group, Header, Modal, Stack } from "@mantine/core";
+import {
+  AppShell,
+  Button,
+  Group,
+  Header,
+  Modal,
+  Select,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
-import Select from "react-select";
 import { NumberInput } from "@mantine/core";
 import { useReward } from "react-rewards";
 import ReactCanvasConfetti from "react-canvas-confetti";
 
 import restApis from "../../tools/githubRestApis";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  increment,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useSetState } from "@mantine/hooks";
+import { selectOption } from "../../mets";
 // NOTE datastoreができるまでのダミーデータ
 const dummyData = {
   token: "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",
@@ -43,8 +59,10 @@ const LogedIn = ({ token, user, setToken, userName }) => {
     repo: "",
     token: "",
     weight: 0,
+    calorie: 0,
   });
-  // const [mets, setMets] = useSetState({});
+  // const [mets, setMets] = useState();
+
   const [opened, setOpened] = useState(false);
 
   const { reward: rewardfun1, isAnimating1 } = useReward(
@@ -91,17 +109,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
     }
   );
 
-  const options = [
-    { value: "ストレッチング2.3メッツ", label: "ストレッチング2.3メッツ" },
-    {
-      value: 3,
-      label: "バレーボール、ボウリング3メッツ",
-    },
-    {
-      value: "サーフィン、ソフトボール5メッツ",
-      label: "Vサーフィン、ソフトボール5メッツ",
-    },
-  ];
+  const options = selectOption;
 
   const refAnimationInstance = useRef(null);
   const [intervalId, setIntervalId] = useState();
@@ -143,6 +151,27 @@ const LogedIn = ({ token, user, setToken, userName }) => {
         console.log(err);
       });
   };
+  const [mets, setMets] = useState();
+  const [minutes, setMinutes] = useState();
+  const [calorie, setCalorie] = useState();
+
+  const calculateCalorie = () => {
+    const calcu = Math.round(((mets[0] * minutes) / 60) * userInfo.weight);
+    setCalorie(calcu);
+    console.log(calorie);
+  };
+  const update = () =>
+    updateDoc(doc(db, "users", user.uid), {
+      calorie: increment(calorie),
+    });
+  const addMets = () => {
+    const docRef = collection(db, "users", user.uid, "mets");
+    setDoc(doc(docRef), {
+      do: mets[1],
+      mets: mets[0],
+      time: Math.round((minutes / 60) * 10) / 10,
+    });
+  };
   useEffect(() => {
     check();
     console.log(userInfo);
@@ -158,10 +187,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       });
 
     restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo);
-  };
-
-  const test = (e) => {
-    console.log(e.value);
   };
 
   useEffect(() => {
@@ -223,9 +248,10 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               <span className="text-2xl text-center">メッツを入力</span>
               <div className="mx-[calc(20%)]">
                 <Select
-                  value={10}
-                  options={options}
-                  onChange={test}
+                  searchable
+                  value={mets}
+                  data={options}
+                  onChange={setMets}
                   className="min-w-fit w-full"
                 />
               </div>
@@ -250,13 +276,24 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 <div className="flex items-center mx-10 p-0">
                   <NumberInput
                     className="w-full"
-                    defaultValue={50}
+                    value={minutes}
                     withAsterisk
+                    onChange={(val) => {
+                      setMinutes(val);
+                    }}
                   />
                   <span className="text-xl px-2 py-0 my-0">分</span>
                 </div>
               </div>
             </div>
+            <Button
+              onClick={() => {
+                calculateCalorie();
+              }}
+            >
+              calculateCalorie
+            </Button>
+            <Text>{calorie}</Text>
             <Button
               disabled={isAnimating1}
               onClick={() => {
@@ -268,6 +305,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 rewardfun6();
                 startAnimation();
                 setTimeout(pauseAnimation, 2000);
+                addMets();
               }}
               radius="md"
               className="mx-[calc(30%)]"
@@ -313,9 +351,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             <button onClick={stopAnimation}>Stop</button>
           </div>
           <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-          <button className="btn" onClick={test}>
-            Button
-          </button>
         </div>
       </AppShell>
     </>
