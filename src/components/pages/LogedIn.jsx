@@ -133,7 +133,13 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
   const handleGrowGrass = () => {
     console.log("called methods");
-    restApis.growGrassToGithub(userInfo.token, userInfo.name, userInfo.repo);
+    console.log('メッツ量 :' + mets[0])
+    var cnt = 0;
+    while((mets[0] - 1) > cnt){
+      console.log('run commit')
+      restApis.growGrassToGithub(userInfo.token, userInfo.name, userInfo.repo);
+      cnt++;
+    }
   };
 
   useEffect(() => {
