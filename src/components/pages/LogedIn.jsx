@@ -169,6 +169,13 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   <Text>{user.displayName}</Text>
                 </Group>
                 <Group>
+                  <ActionIcon
+                    onClick={() => {
+                      setOpened(true);
+                    }}
+                  >
+                    <AiOutlineSetting></AiOutlineSetting>
+                  </ActionIcon>
                   <Button
                     onClick={() => {
                       signOut(auth).then((result) => {
@@ -179,13 +186,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   >
                     Logout
                   </Button>
-                  <ActionIcon
-                    onClick={() => {
-                      setOpened(true);
-                    }}
-                  >
-                    <AiOutlineSetting></AiOutlineSetting>
-                  </ActionIcon>
                 </Group>
                 {/* <Text>{user.displayName}</Text> */}
               </Group>
