@@ -14,7 +14,6 @@ import {
 import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
 import { NumberInput } from "@mantine/core";
-import { useReward } from "react-rewards";
 import ReactCanvasConfetti from "react-canvas-confetti";
 import { AiOutlineSetting } from "react-icons/ai";
 import restApis from "../../tools/githubRestApis";
