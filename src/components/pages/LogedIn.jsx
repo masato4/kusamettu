@@ -7,21 +7,23 @@ import {
   Header,
   Modal,
   Select,
-  Stack,
   Text,
+  ActionIcon,
+  Avatar,
 } from "@mantine/core";
 import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
 import { NumberInput } from "@mantine/core";
-import { useReward } from "react-rewards";
 import ReactCanvasConfetti from "react-canvas-confetti";
-
+import { AiOutlineSetting } from "react-icons/ai";
 import restApis from "../../tools/githubRestApis";
 import {
   collection,
   doc,
   getDoc,
+  getDocs,
   increment,
+  query,
   serverTimestamp,
   setDoc,
   updateDoc,
@@ -123,6 +125,15 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       mets: mets[0],
       time: Math.round((minutes / 60) * 10) / 10,
       timestamp: serverTimestamp(),
+      calorie: calorie,
+    });
+  };
+  const getMets = async () => {
+    const q = query(collection(db, "users", user.uid, "mets"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.data().timestamp.toDate().toJSON().split("T")[0]);
     });
   };
   useEffect(() => {
@@ -141,6 +152,9 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       clearInterval(intervalId);
     };
   }, [intervalId]);
+  useEffect(() => {
+    getMets();
+  }, []);
 
   return (
     <>
@@ -149,25 +163,31 @@ const LogedIn = ({ token, user, setToken, userName }) => {
         header={
           <Header height={60} p="xs">
             <>
-              <Group position="apart">
+              <Group position="apart" className="mr-7 ml-7">
+                <Group>
+                  <Avatar src={user.photoURL}></Avatar>
+                  <Text>{user.displayName}</Text>
+                </Group>
+                <Group>
+                  <Button
+                    onClick={() => {
+                      signOut(auth).then((result) => {
+                        console.log(result);
+                        setToken("");
+                      });
+                    }}
+                  >
+                    Logout
+                  </Button>
+                  <ActionIcon
+                    onClick={() => {
+                      setOpened(true);
+                    }}
+                  >
+                    <AiOutlineSetting></AiOutlineSetting>
+                  </ActionIcon>
+                </Group>
                 {/* <Text>{user.displayName}</Text> */}
-                <Button
-                  onClick={() => {
-                    signOut(auth).then((result) => {
-                      console.log(result);
-                      setToken("");
-                    });
-                  }}
-                >
-                  Logout
-                </Button>
-                <Button
-                  onClick={() => {
-                    setOpened(true);
-                  }}
-                >
-                  Modal
-                </Button>
               </Group>
             </>
           </Header>
@@ -189,7 +209,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
           />
         </Modal>
         <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
-          {/* <Stack align="center" spacing="xl" justify="space-around"> */}
           <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
             <div className="grid grid-cols-1 grid-rows-2 place-content-center">
               <span className="text-2xl text-center">メッツを入力</span>
@@ -203,7 +222,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 />
               </div>
             </div>
-            {/* <div>{userInfo.weight}</div> */}
+
             <div className="grid grid-cols-2 grid-rows-1">
               <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
                 <span className="text-2xl text-center">体重を入力</span>
@@ -237,10 +256,11 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               onClick={() => {
                 calculateCalorie();
               }}
+              className="mx-[calc(30%)]"
             >
               calculateCalorie
             </Button>
-            <Text>{calorie}</Text>
+            <Text className="mx-[calc(30%)]">{calorie}</Text>
             <Button
               // disabled={isAnimating1}
 
@@ -256,7 +276,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               送信
             </Button>
           </div>
-          {/* </Stack> */}
 
           <div className="flex flex-col h-">wwwwwwwwwww</div>
           <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
