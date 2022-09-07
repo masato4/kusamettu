@@ -2,7 +2,7 @@ import { Autocomplete, Button, NumberInput, Stack } from "@mantine/core";
 import { doc, setDoc, updateDoc, increment, getDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../../firebase";
-import createGithubRepository from "../../tools/githubRestApis";
+import restApis from "../../tools/githubRestApis";
 
 const UserInfo = ({
   token,
@@ -43,14 +43,13 @@ const UserInfo = ({
       weight: weight,
     });
 
-    const createGithub = () =>
-      createGithubRepository(
-        "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",
-        "yashiro-ryo",
-        repo
-      ).then(() => {
-        console.log("リポジトリ生成完了!");
-      });
+    console.log('userName: ' + user.displayName)
+    console.log('token :' + token)
+    console.log('repo :' + repo)
+    console.log('repo 作るよー')
+    restApis.creaetGithubRepository(token, 'yashiroryo', repo)
+    console.log('リポジトリつくたったわwwwww')
+
   };
   const addMets = () => {
     getDoc(doc(db, "users", user.uid, "mets", user.uid)).then((data) => {
