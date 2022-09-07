@@ -151,12 +151,9 @@ const LogedIn = ({ token, user, setToken }) => {
   }, [opened]);
 
   const handleGrowGrass = () => {
-    console.log("called methods");
-    restApis
-      .growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo)
-      .then(() => {
-        console.log("草生やしたったwwwwww");
-      });
+
+    restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo);
+
   };
 
   useEffect(() => {
@@ -290,6 +287,10 @@ const LogedIn = ({ token, user, setToken }) => {
             </>
           </AppShell>
         </>
+
+  
+            
+
       ) : (
         <>
           <UserInfo setUserInfo={setUserInfo} token={token} user={user} />
