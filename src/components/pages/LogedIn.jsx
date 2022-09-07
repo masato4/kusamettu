@@ -47,50 +47,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   // const [mets, setMets] = useSetState({});
   const [opened, setOpened] = useState(false);
 
-  const { reward: rewardfun1, isAnimating1 } = useReward(
-    "rewardId1",
-    "confetti",
-    {
-      colors: ["#ACE7AE", "#69C16E", "#549F57", "#386C3E"],
-      elementCount: 200,
-    }
-  );
-  const { reward: rewardfun2, isAnimating2 } = useReward(
-    "rewardId2",
-    "confetti",
-    {
-      colors: ["#ACE7AE", "#69C16E", "#549F57", "#386C3E"],
-    }
-  );
-  const { reward: rewardfun3, isAnimating3 } = useReward(
-    "rewardId3",
-    "confetti",
-    {
-      colors: ["#ACE7AE", "#69C16E", "#549F57", "#386C3E"],
-    }
-  );
-  const { reward: rewardfun4, isAnimating4 } = useReward(
-    "rewardId4",
-    "confetti",
-    {
-      colors: ["#ACE7AE", "#69C16E", "#549F57", "#386C3E"],
-    }
-  );
-  const { reward: rewardfun5, isAnimating5 } = useReward(
-    "rewardId5",
-    "confetti",
-    {
-      colors: ["#ACE7AE", "#69C16E", "#549F57", "#386C3E"],
-    }
-  );
-  const { reward: rewardfun6, isAnimating6 } = useReward(
-    "rewardId6",
-    "confetti",
-    {
-      colors: ["#ACE7AE", "#69C16E", "#549F57", "#386C3E"],
-    }
-  );
-
   const options = [
     { value: "ストレッチング2.3メッツ", label: "ストレッチング2.3メッツ" },
     {
@@ -258,14 +214,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               </div>
             </div>
             <Button
-              disabled={isAnimating1}
               onClick={() => {
-                rewardfun1();
-                rewardfun2();
-                rewardfun3();
-                rewardfun4();
-                rewardfun5();
-                rewardfun6();
                 startAnimation();
                 setTimeout(pauseAnimation, 2000);
               }}
@@ -279,38 +228,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
           <div className="flex flex-col h-">
             wwwwwwwwwww
-            <span id="rewardId1" className="bg-orange-500 w-fit">
-              wwwwww
-            </span>
-            <span
-              id="rewardId2"
-              className="bg-orange-500 w-fit absolute right-11"
-            >
-              wwwwww
-            </span>
-            <span id="rewardId3" className="bg-orange-500 w-fit">
-              wwwwww
-            </span>
-            <span
-              id="rewardId4"
-              className="bg-orange-500 w-fit absolute top-72 right-60"
-            >
-              wwwwww
-            </span>
-            <span id="rewardId5" className="bg-orange-500 w-fit">
-              wwwwww
-            </span>
-            <span
-              id="rewardId6"
-              className="bg-orange-500 w-fit absolute bottom-44 right-11"
-            >
-              wwwwww
-            </span>
-          </div>
-          <div>
-            <button onClick={startAnimation}>Start</button>
-            <button onClick={pauseAnimation}>Pause</button>
-            <button onClick={stopAnimation}>Stop</button>
           </div>
           <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
           <button className="btn" onClick={test}>
