@@ -4,10 +4,17 @@ import React, { useState } from "react";
 import { db } from "../../firebase";
 import createGithubRepository from "../../tools/githubRestApis";
 
-const UserInfo = ({ token, user, setUserInfo, userInfo, setOpened }) => {
+const UserInfo = ({
+  token,
+  user,
+  setUserInfo,
+  userInfo,
+  setOpened,
+  userName,
+}) => {
   const [repo, setRepo] = useState(userInfo?.repo || "");
-  const [path, setPath] = useState(userInfo?.path || "");
   const [weight, setWeight] = useState(userInfo?.weight);
+  const [name, setName] = useState(userName);
   const [isSubmit, setIsSubmit] = useState(false);
   const [met, setMets] = useState();
   // const docref = doc(db, "users", user.uid);
@@ -31,10 +38,9 @@ const UserInfo = ({ token, user, setUserInfo, userInfo, setOpened }) => {
   const addUserInfo = () => {
     const docref = doc(db, "users", user.uid);
     setDoc(docref, {
-      name: user.displayName,
+      name: name,
       token: token,
       repo: repo,
-      path: path,
       weight: weight,
     });
 
@@ -62,20 +68,22 @@ const UserInfo = ({ token, user, setUserInfo, userInfo, setOpened }) => {
       ) : (
         <Stack align="center">
           <Autocomplete
+            label="name"
+            data={[]}
+            value={name}
+            onChange={setName}
+          />
+          <Autocomplete
+            label="repository"
             placeholder="repository"
             data={[]}
             value={repo}
             onChange={setRepo}
           />
-          <Autocomplete
-            placeholder="path"
-            data={[]}
-            value={path}
-            onChange={setPath}
-          />
           <NumberInput
             // placeholder="体重"
             // data={[]}
+            label="体重"
             value={weight}
             onChange={setWeight}
           />

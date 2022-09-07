@@ -37,15 +37,14 @@ function getAnimationSettings(angle, originX) {
   };
 }
 
-const LogedIn = ({ token, user, setToken }) => {
+const LogedIn = ({ token, user, setToken, userName }) => {
   const [userInfo, setUserInfo] = useSetState({
     name: "",
-    path: "",
     repo: "",
     token: "",
     weight: 0,
   });
-  const [mets, setMets] = useSetState({});
+  // const [mets, setMets] = useSetState({});
   const [opened, setOpened] = useState(false);
 
   const { reward: rewardfun1, isAnimating1 } = useReward(
@@ -192,7 +191,7 @@ const LogedIn = ({ token, user, setToken }) => {
             </Header>
           }
         >
-          <>
+          <div>
             <Modal onClose={() => setOpened(false)} opened={opened}>
               <UserInfo
                 setUserInfo={setUserInfo}
@@ -200,6 +199,7 @@ const LogedIn = ({ token, user, setToken }) => {
                 token={token}
                 user={user}
                 setOpened={setOpened}
+                userName={userName}
               />
             </Modal>
             <Stack align="center">
@@ -207,7 +207,7 @@ const LogedIn = ({ token, user, setToken }) => {
               <Select options={options} className="w-96" />
               <div>{userInfo.weight}</div>
               <NumberInput
-                className="w-fit"
+                // className="w-fit"
                 value={userInfo.weight}
                 onChange={(val) => {
                   setUserInfo({ weight: val });
@@ -218,7 +218,7 @@ const LogedIn = ({ token, user, setToken }) => {
               />
               <div>時間</div>
               <div className="flex items-center">
-                <NumberInput className="w-20" defaultValue={50} withAsterisk />
+                <NumberInput className="" defaultValue={50} withAsterisk />
                 <span className="text-xl">分</span>
               </div>
               <Button
@@ -284,7 +284,7 @@ const LogedIn = ({ token, user, setToken }) => {
               refConfetti={getInstance}
               style={canvasStyles}
             />
-          </>
+          </div>
         </AppShell>
       </>
     </>
