@@ -33,13 +33,11 @@ function getAnimationSettings(angle, originX) {
     angle,
     spread: 55,
     origin: { x: originX },
-    colors:["#ACE7AE", "#69C16E", "#549F57", "#386C3E"]
+    colors: ["#ACE7AE", "#69C16E", "#549F57", "#386C3E"],
   };
 }
 
-
 const LogedIn = ({ token, user, setToken, userName }) => {
-
   const [userInfo, setUserInfo] = useSetState({
     name: "",
     repo: "",
@@ -162,9 +160,9 @@ const LogedIn = ({ token, user, setToken, userName }) => {
     restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo);
   };
 
-  const test = (e) =>{
-    console.log(e.value)
-  }
+  const test = (e) => {
+    console.log(e.value);
+  };
 
   useEffect(() => {
     return () => {
@@ -174,38 +172,41 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
   return (
     <>
-      <>
-        <AppShell
-          padding="md"
-          header={
-            <Header height={60} p="xs">
-              <>
-                <Group position="apart">
-                  {/* <Text>{user.displayName}</Text> */}
-                  <Button
-                    onClick={() => {
-                      signOut(auth).then((result) => {
-                        console.log(result);
-                        setToken("");
-                      });
-                    }}
-                  >
-                    Logout
-                  </Button>
-                </Group>
-              </>
-            </Header>
-          }
-        >
+      <AppShell
+        padding="md"
+        header={
+          <Header height={60} p="xs">
+            <>
+              <Group position="apart">
+                {/* <Text>{user.displayName}</Text> */}
+                <Button
+                  onClick={() => {
+                    signOut(auth).then((result) => {
+                      console.log(result);
+                      setToken("");
+                    });
+                  }}
+                >
+                  Logout
+                </Button>
+              </Group>
+            </>
+          </Header>
+        }
+      >
         <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
           {/* <Stack align="center" spacing="xl" justify="space-around"> */}
           <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
             <div className="grid grid-cols-1 grid-rows-2 place-content-center">
               <span className="text-2xl text-center">メッツを入力</span>
               <div className="mx-[calc(20%)]">
-                <Select value={10} options={options} onChange={test} className="min-w-fit w-full"/>
+                <Select
+                  value={10}
+                  options={options}
+                  onChange={test}
+                  className="min-w-fit w-full"
+                />
               </div>
-              
             </div>
             {/* <div>{userInfo.weight}</div> */}
             <div className="grid grid-cols-2 grid-rows-1">
@@ -225,31 +226,34 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               <div className="grid grid-cols-1 grid-rows-2 place-content-cente h-fit gap-2">
                 <span className="text-2xl text-center">時間を入力</span>
                 <div className="flex items-center mx-10 p-0">
-                  <NumberInput className="w-full" defaultValue={50} withAsterisk />
+                  <NumberInput
+                    className="w-full"
+                    defaultValue={50}
+                    withAsterisk
+                  />
                   <span className="text-xl px-2 py-0 my-0">分</span>
                 </div>
               </div>
             </div>
             <Button
-            disabled={isAnimating1}
-            onClick={() => {
-              rewardfun1();
-              rewardfun2();
-              rewardfun3();
-              rewardfun4();
-              rewardfun5();
-              rewardfun6();
-              startAnimation();
-              setTimeout(pauseAnimation, 2000);
-            }}
-            radius="md"
-            className="mx-[calc(30%)]"
-          >
-            送信
-          </Button>
+              disabled={isAnimating1}
+              onClick={() => {
+                rewardfun1();
+                rewardfun2();
+                rewardfun3();
+                rewardfun4();
+                rewardfun5();
+                rewardfun6();
+                startAnimation();
+                setTimeout(pauseAnimation, 2000);
+              }}
+              radius="md"
+              className="mx-[calc(30%)]"
+            >
+              送信
+            </Button>
           </div>
-          {/* </Stack> */}      
-          
+          {/* </Stack> */}
 
           <div className="flex flex-col h-">
             wwwwwwwwwww
@@ -287,16 +291,11 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             <button onClick={stopAnimation}>Stop</button>
           </div>
           <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-          <button className="btn" onClick={test}>Button</button>
+          <button className="btn" onClick={test}>
+            Button
+          </button>
         </div>
-        
       </AppShell>
-      ) : (
-        <>
-          <UserInfo token={token} user={user} />
-        </>
-      )}
-
     </>
   );
 };
