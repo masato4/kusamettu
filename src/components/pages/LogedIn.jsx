@@ -36,9 +36,6 @@ function getAnimationSettings(angle, originX) {
     colors: ["#bb0000", "#ffffff"],
   };
 }
-
-
-=======
 const LogedIn = ({ token, user, setToken }) => {
   const [userInfo, setUserInfo] = useSetState({
     name: "",
@@ -152,12 +149,11 @@ const LogedIn = ({ token, user, setToken }) => {
 
   const handleGrowGrass = () => {
     console.log("called methods");
-    restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo).then(
-      () => {
+    restApis
+      .growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo)
+      .then(() => {
         console.log("草生やしたったwwwwww");
-      }
-    );
-    
+      });
   };
 
   useEffect(() => {
@@ -174,10 +170,7 @@ const LogedIn = ({ token, user, setToken }) => {
           header={
             <Header height={60} p="xs">
               <>
-                <Group
-                  position="apart"
-                
-                >
+                <Group position="apart">
                   {/* <Text>{user.displayName}</Text> */}
                   <Button
                     onClick={() => {
@@ -194,8 +187,6 @@ const LogedIn = ({ token, user, setToken }) => {
             </Header>
           }
         >
-
-
           <Stack align="center">
             <div>wwwwwwwwwwwwwwwwwwwww</div>
             <Select options={options} className="w-96" />
