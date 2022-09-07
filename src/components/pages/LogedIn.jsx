@@ -7,10 +7,11 @@ import Select from "react-select";
 import { NumberInput } from "@mantine/core";
 import { useReward } from "react-rewards";
 import ReactCanvasConfetti from "react-canvas-confetti";
-
 import restApis from "../../tools/githubRestApis";
 import { doc, getDoc } from "firebase/firestore";
 import { useSetState } from "@mantine/hooks";
+import { GithubCalendar } from "../parts/GithubExerciseCalendar/GithubCalendar";
+import { Segmented } from "../parts/GithubSegmentedControl/SegmentedControl";
 
 const canvasStyles = {
   position: "fixed",
@@ -20,6 +21,7 @@ const canvasStyles = {
   top: 0,
   left: 0,
 };
+
 
 function getAnimationSettings(angle, originX) {
   return {
@@ -162,7 +164,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
         </Modal>
         <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
           {/* <Stack align="center" spacing="xl" justify="space-around"> */}
-          <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
+          <div className="grid grid-cols-1 grid-rows-5 place-content-center gap-2">
             <div className="grid grid-cols-1 grid-rows-2 place-content-center">
               <span className="text-2xl text-center">メッツを入力</span>
               <div className="mx-[calc(20%)]">
@@ -212,16 +214,19 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             >
               送信
             </Button>
+            <Segmented />
+
+            {/* <div className="mt-20">
+              <GithubCalendar />
+            </div> */}
+           
           </div>
           {/* </Stack> */}
-
+          
           <div className="flex flex-col h-">
             wwwwwwwwwww
           </div>
           <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-          <button className="btn" onClick={test}>
-            Button
-          </button>
         </div>
       </AppShell>
     </>
