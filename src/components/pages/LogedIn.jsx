@@ -37,8 +37,6 @@ function getAnimationSettings(angle, originX) {
   };
 }
 
-
-=======
 const LogedIn = ({ token, user, setToken }) => {
   const [userInfo, setUserInfo] = useSetState({
     name: "",
