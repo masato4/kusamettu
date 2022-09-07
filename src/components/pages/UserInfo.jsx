@@ -15,7 +15,6 @@ const UserInfo = ({
   const [repo, setRepo] = useState(userInfo?.repo || "");
   const [weight, setWeight] = useState(userInfo?.weight);
   const [name, setName] = useState(userName);
-  const [isSubmit, setIsSubmit] = useState(false);
   const [met, setMets] = useState();
   // const docref = doc(db, "users", user.uid);
   const increase = () => {};
@@ -63,42 +62,33 @@ const UserInfo = ({
   };
   return (
     <>
-      {isSubmit ? (
-        <></>
-      ) : (
-        <Stack align="center">
-          <Autocomplete
-            label="name"
-            data={[]}
-            value={name}
-            onChange={setName}
-          />
-          <Autocomplete
-            label="repository"
-            placeholder="repository"
-            data={[]}
-            value={repo}
-            onChange={setRepo}
-          />
-          <NumberInput
-            // placeholder="体重"
-            // data={[]}
-            label="体重"
-            value={weight}
-            onChange={setWeight}
-          />
-          {/* <Autocomplete /> */}
-          <Button
-            onClick={() => {
-              addUserInfo();
-              check();
-              setOpened(false);
-            }}
-          >
-            submit
-          </Button>
-        </Stack>
-      )}
+      <Stack align="center">
+        <Autocomplete label="name" data={[]} value={name} onChange={setName} />
+        <Autocomplete
+          label="repository"
+          placeholder="repository"
+          data={[]}
+          value={repo}
+          onChange={setRepo}
+        />
+        <NumberInput
+          // placeholder="体重"
+          // data={[]}
+          label="体重"
+          value={weight}
+          onChange={setWeight}
+        />
+        {/* <Autocomplete /> */}
+        <Button
+          onClick={() => {
+            addUserInfo();
+            check();
+            setOpened(false);
+          }}
+        >
+          submit
+        </Button>
+      </Stack>
     </>
   );
 };
