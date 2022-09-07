@@ -73,7 +73,6 @@ const gitCommitPush = async (config) => {
     ref: `heads/${config.branch}`,
     sha: createCommit.data.sha,
   });
-
   console.log("commit success:", updateRef.data);
 };
 
@@ -103,21 +102,25 @@ async function gitCreateRepository(token, ownerName, repoName) {
 
   console.log("リポジトリ生成完了 repoName: " + repoName);
 
-  await gh.repos.createOrUpdateFileContents({
-    owner: ownerName,
-    repo: repoName,
-    path: "log.md",
-    message: "commit message",
-    // NOTE contentはBASE64でエンコードしないとだめ
-    content: btoa(
-      String.fromCharCode.apply(
-        null,
-        new TextEncoder().encode(
-          `草生やしたったwww ${new Date().toLocaleString()}`
+  const date = new Date();
+
+  for (var i = 0; i < 11; i++) {
+    await gh.repos.createOrUpdateFileContents({
+      owner: ownerName,
+      repo: repoName,
+      path: `log${i}.md`,
+      message: "commit message",
+      // NOTE contentはBASE64でエンコードしないとだめ
+      content: btoa(
+        String.fromCharCode.apply(
+          null,
+          new TextEncoder().encode(
+            `草生やしたったwww ${date.toLocaleString()} ${date.getMilliseconds()} filename: log${i}.md`
+          )
         )
-      )
-    ),
-  });
+      ),
+    });
+  }
 
   console.log("ファイルアップロード完了");
 }
