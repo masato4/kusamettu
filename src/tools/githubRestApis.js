@@ -79,11 +79,7 @@ const gitCommitPush = async (config) => {
 
 async function creaetGithubRepository(token, ownerName, repo) {
   try {
-    await gitCreateRepository({
-      token: token,
-      ownerName: ownerName,
-      repoName: repo,
-    });
+    await gitCreateRepository(token, ownerName, repo);
     console.log("successed creaet repository");
   } catch (error) {
     console.log(error);
@@ -112,9 +108,15 @@ async function gitCreateRepository(token, ownerName, repoName) {
     repo: repoName,
     path: "log.md",
     message: "commit message",
-    content: Buffer.from(
-      `草生やしたっったわwwww ${new Date().toLocaleString()}`
-    ).toString("base64"),
+    // NOTE contentはBASE64でエンコードしないとだめ
+    content: btoa(
+      String.fromCharCode.apply(
+        null,
+        new TextEncoder().encode(
+          `草生やしたったwww ${new Date().toLocaleString()}`
+        )
+      )
+    ),
   });
 
   console.log("ファイルアップロード完了");
