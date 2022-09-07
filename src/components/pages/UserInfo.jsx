@@ -1,3 +1,4 @@
+
 import { Autocomplete, Button, NumberInput, Stack } from "@mantine/core";
 import { doc, setDoc, updateDoc, increment, getDoc } from "firebase/firestore";
 import React, { useState } from "react";
@@ -72,6 +73,7 @@ const UserInfo = ({ token, user }) => {
       </Button> */}
     </Stack>
   );
+
 };
 
 export default UserInfo;
