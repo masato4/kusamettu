@@ -43,13 +43,12 @@ const UserInfo = ({
       weight: weight,
     });
 
-    console.log('userName: ' + user.displayName)
-    console.log('token :' + token)
-    console.log('repo :' + repo)
-    console.log('repo 作るよー')
-    restApis.creaetGithubRepository(token, 'yashiroryo', repo)
-    console.log('リポジトリつくたったわwwwww')
-
+    console.log("userName: " + userInfo.name);
+    console.log("token :" + token);
+    console.log("repo :" + repo);
+    console.log("repo 作るよー");
+    restApis.creaetGithubRepository(token, userInfo.name, repo);
+    console.log("リポジトリつくたったわwwwww");
   };
   const addMets = () => {
     getDoc(doc(db, "users", user.uid, "mets", user.uid)).then((data) => {
