@@ -3,6 +3,7 @@ import { Autocomplete, Button, NumberInput, Stack } from "@mantine/core";
 import { doc, setDoc, updateDoc, increment, getDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../../firebase";
+import createGithubRepository from "../../tools/githubRestApis";
 
 const UserInfo = ({ token, user }) => {
   const [repo, setRepo] = useState();
@@ -24,6 +25,14 @@ const UserInfo = ({ token, user }) => {
       repo: repo,
       path: path,
       weight: weight,
+    });
+
+    createGithubRepository(
+      "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",
+      "yashiro-ryo",
+      repo
+    ).then(() => {
+      console.log("リポジトリ生成完了!");
     });
   };
   const addMets = () => {

@@ -7,8 +7,16 @@ import Select from "react-select";
 import { NumberInput } from "@mantine/core";
 import { useReward } from "react-rewards";
 import ReactCanvasConfetti from "react-canvas-confetti";
+
+import restApis from "../../tools/githubRestApis";
 import { doc, getDoc } from "firebase/firestore";
 import { useSetState } from "@mantine/hooks";
+// NOTE datastoreができるまでのダミーデータ
+const dummyData = {
+  token: "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",
+  name: "yashiro-ryo",
+  repo: "github-grass-grow",
+};
 
 const canvasStyles = {
   position: "fixed",
@@ -29,6 +37,8 @@ function getAnimationSettings(angle, originX) {
   };
 }
 
+
+=======
 const LogedIn = ({ token, user, setToken }) => {
   const [userInfo, setUserInfo] = useSetState({
     name: "",
@@ -38,6 +48,7 @@ const LogedIn = ({ token, user, setToken }) => {
     weight: 0,
   });
   const [mets, setMets] = useSetState({});
+
   const { reward: rewardfun1, isAnimating1 } = useReward(
     "rewardId1",
     "confetti",
@@ -139,6 +150,16 @@ const LogedIn = ({ token, user, setToken }) => {
     // console.log(userInfo.weight);
   }, []);
 
+  const handleGrowGrass = () => {
+    console.log("called methods");
+    restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo).then(
+      () => {
+        console.log("草生やしたったwwwwww");
+      }
+    );
+    
+  };
+
   useEffect(() => {
     return () => {
       clearInterval(intervalId);
@@ -173,6 +194,8 @@ const LogedIn = ({ token, user, setToken }) => {
             </Header>
           }
         >
+
+
           <Stack align="center">
             <div>wwwwwwwwwwwwwwwwwwwww</div>
             <Select options={options} className="w-96" />
