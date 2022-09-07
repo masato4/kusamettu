@@ -1,3 +1,4 @@
+
 import { Button } from '@mantine/core';
 import { LoginHeader } from '../parts/LoginHeader';
 
@@ -22,8 +23,13 @@ export const NotLogin = ({login}) => {
         }
       }} className="text" onClick={login}>
           草をはやしにいく
+
+
         </Button>
       </div>
     </>
   );
-}
+};
+
+export default NotLogin;
+

@@ -5,6 +5,8 @@ import { auth } from "../../firebase";
 import LogedIn from "./LogedIn";
 import { NotLogin } from "../views/NotLogin";
 
+import NotLogin from "../views/NotLogin";
+
 export const Login = () => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState();
@@ -37,12 +39,19 @@ export const Login = () => {
   return (
     <>
       {token === "" ? (
-        <NotLogin login={()=>login()} />
+
+        <>
+          <NotLogin
+            login={() => {
+              login();
+            }}
+          />
+        </>
       ) : (
         <>
-          <LogedIn user={user} setToken={setToken} />
+          <LogedIn token={token} user={user} setToken={setToken} />
         </>
       )}
     </>
   );
-}
+};
