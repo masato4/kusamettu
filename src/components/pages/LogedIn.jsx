@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { AppShell, Button, Group, Header, Stack } from "@mantine/core";
+import { AppShell, Button, Group, Header, Modal, Stack } from "@mantine/core";
 import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
 import Select from "react-select";
@@ -38,15 +38,16 @@ function getAnimationSettings(angle, originX) {
 }
 
 
-const LogedIn = ({ token, user, setToken }) => {
+const LogedIn = ({ token, user, setToken, userName }) => {
+
   const [userInfo, setUserInfo] = useSetState({
     name: "",
-    path: "",
     repo: "",
     token: "",
     weight: 0,
   });
-  const [mets, setMets] = useSetState({});
+  // const [mets, setMets] = useSetState({});
+  const [opened, setOpened] = useState(false);
 
   const { reward: rewardfun1, isAnimating1 } = useReward(
     "rewardId1",
@@ -138,7 +139,7 @@ const LogedIn = ({ token, user, setToken }) => {
     const docRef = doc(db, "users", user.uid);
     await getDoc(docRef)
       .then((data) => {
-        data.exists() ? setUserInfo(data.data()) : setUserInfo("yet");
+        data.exists() ? setUserInfo(data.data()) : setOpened(true);
       })
       .catch((err) => {
         console.log(err);
@@ -146,17 +147,19 @@ const LogedIn = ({ token, user, setToken }) => {
   };
   useEffect(() => {
     check();
+    console.log(userInfo);
     // console.log(userInfo.weight);
-  }, []);
+  }, [opened]);
 
   const handleGrowGrass = () => {
     console.log("called methods");
-    restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo).then(
-      () => {
+    restApis
+      .growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo)
+      .then(() => {
         console.log("草生やしたったwwwwww");
-      }
-    );
-    
+      });
+
+    restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo);
   };
 
   const test = (e) =>{
@@ -171,16 +174,13 @@ const LogedIn = ({ token, user, setToken }) => {
 
   return (
     <>
-      {userInfo.name !== "" ? (
+      <>
         <AppShell
           padding="md"
           header={
             <Header height={60} p="xs">
               <>
-                <Group
-                  position="apart"
-                
-                >
+                <Group position="apart">
                   {/* <Text>{user.displayName}</Text> */}
                   <Button
                     onClick={() => {
@@ -296,6 +296,7 @@ const LogedIn = ({ token, user, setToken }) => {
           <UserInfo token={token} user={user} />
         </>
       )}
+
     </>
   );
 };

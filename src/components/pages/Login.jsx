@@ -1,5 +1,10 @@
 import { React, useState } from "react";
-import { signInWithPopup, GithubAuthProvider, signOut } from "firebase/auth";
+import {
+  signInWithPopup,
+  GithubAuthProvider,
+  signOut,
+  getAdditionalUserInfo,
+} from "firebase/auth";
 import { Button } from "@mantine/core";
 import { auth } from "../../firebase";
 import LogedIn from "./LogedIn";
@@ -8,6 +13,7 @@ import { NotLogin } from "../views/NotLogin";
 export const Login = () => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState();
+  const [userName, setUserName] = useState("");
   const login = () => {
     const provider = new GithubAuthProvider();
     provider.addScope("repo");
@@ -17,7 +23,8 @@ export const Login = () => {
         const credential = GithubAuthProvider.credentialFromResult(result);
         setToken(credential.accessToken);
         // The signed-in user info.
-
+        const addInfo = getAdditionalUserInfo(result);
+        setUserName(addInfo.username);
         setUser(result.user);
         console.log(token, user);
         // ...
@@ -33,6 +40,7 @@ export const Login = () => {
         // ...
       });
   };
+
   return (
     <>
       {token === "" ? (
@@ -45,7 +53,12 @@ export const Login = () => {
         </>
       ) : (
         <>
-          <LogedIn token={token} user={user} setToken={setToken} />
+          <LogedIn
+            token={token}
+            user={user}
+            setToken={setToken}
+            userName={userName}
+          />
         </>
       )}
     </>
