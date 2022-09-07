@@ -33,9 +33,10 @@ function getAnimationSettings(angle, originX) {
     angle,
     spread: 55,
     origin: { x: originX },
-    colors: ["#bb0000", "#ffffff"],
+    colors:["#ACE7AE", "#69C16E", "#549F57", "#386C3E"]
   };
 }
+
 
 const LogedIn = ({ token, user, setToken }) => {
   const [userInfo, setUserInfo] = useSetState({
@@ -94,7 +95,7 @@ const LogedIn = ({ token, user, setToken }) => {
   const options = [
     { value: "ストレッチング2.3メッツ", label: "ストレッチング2.3メッツ" },
     {
-      value: "バレーボール、ボウリング3メッツ",
+      value: 3,
       label: "バレーボール、ボウリング3メッツ",
     },
     {
@@ -158,6 +159,10 @@ const LogedIn = ({ token, user, setToken }) => {
     
   };
 
+  const test = (e) =>{
+    console.log(e.value)
+  }
+
   useEffect(() => {
     return () => {
       clearInterval(intervalId);
@@ -192,46 +197,62 @@ const LogedIn = ({ token, user, setToken }) => {
             </Header>
           }
         >
-
-
-          <Stack align="center">
-            <div>wwwwwwwwwwwwwwwwwwwww</div>
-            <Select options={options} className="w-96" />
-            <div>{userInfo.weight}</div>
-            <NumberInput
-              className="w-fit"
-              value={userInfo.weight}
-              onChange={(val) => {
-                setUserInfo({ weight: val });
-              }}
-              placeholder="体重を入力してください"
-              // label="体重を入力してください"
-              withAsterisk
-            />
-            <div>時間</div>
-            <div className="flex items-center">
-              <NumberInput className="w-20" defaultValue={50} withAsterisk />
-              <span className="text-xl">分</span>
+        <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
+          {/* <Stack align="center" spacing="xl" justify="space-around"> */}
+          <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
+            <div className="grid grid-cols-1 grid-rows-2 place-content-center">
+              <span className="text-2xl text-center">メッツを入力</span>
+              <div className="mx-[calc(20%)]">
+                <Select value={10} options={options} onChange={test} className="min-w-fit w-full"/>
+              </div>
+              
+            </div>
+            {/* <div>{userInfo.weight}</div> */}
+            <div className="grid grid-cols-2 grid-rows-1">
+              <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
+                <span className="text-2xl text-center">体重を入力</span>
+                <NumberInput
+                  className="w-full px-10"
+                  value={userInfo.weight}
+                  onChange={(val) => {
+                    setUserInfo({ weight: val });
+                  }}
+                  placeholder="体重を入力してください"
+                  // label="体重を入力してください"
+                  withAsterisk
+                />
+              </div>
+              <div className="grid grid-cols-1 grid-rows-2 place-content-cente h-fit gap-2">
+                <span className="text-2xl text-center">時間を入力</span>
+                <div className="flex items-center mx-10 p-0">
+                  <NumberInput className="w-full" defaultValue={50} withAsterisk />
+                  <span className="text-xl px-2 py-0 my-0">分</span>
+                </div>
+              </div>
             </div>
             <Button
-              disabled={isAnimating1}
-              onClick={() => {
-                rewardfun1();
-                rewardfun2();
-                rewardfun3();
-                rewardfun4();
-                rewardfun5();
-                rewardfun6();
-                startAnimation();
-                setTimeout(pauseAnimation, 2000);
-              }}
-              radius="md"
-            >
-              送信
-            </Button>
-          </Stack>
+            disabled={isAnimating1}
+            onClick={() => {
+              rewardfun1();
+              rewardfun2();
+              rewardfun3();
+              rewardfun4();
+              rewardfun5();
+              rewardfun6();
+              startAnimation();
+              setTimeout(pauseAnimation, 2000);
+            }}
+            radius="md"
+            className="mx-[calc(30%)]"
+          >
+            送信
+          </Button>
+          </div>
+          {/* </Stack> */}      
+          
 
-          <div className="flex flex-col">
+          <div className="flex flex-col h-">
+            wwwwwwwwwww
             <span id="rewardId1" className="bg-orange-500 w-fit">
               wwwwww
             </span>
@@ -266,7 +287,10 @@ const LogedIn = ({ token, user, setToken }) => {
             <button onClick={stopAnimation}>Stop</button>
           </div>
           <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-        </AppShell>
+          <button className="btn" onClick={test}>Button</button>
+        </div>
+        
+      </AppShell>
       ) : (
         <>
           <UserInfo token={token} user={user} />
