@@ -1,14 +1,16 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { AppShell, Button, Group, Header, Navbar, Text } from "@mantine/core";
+import { AppShell, Button, Group, Header, Stack } from "@mantine/core";
 import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
 import Select from "react-select";
 import { NumberInput } from "@mantine/core";
 import { useReward } from "react-rewards";
 import ReactCanvasConfetti from "react-canvas-confetti";
-import restApis from "../../tools/githubRestApis";
 
+import restApis from "../../tools/githubRestApis";
+import { doc, getDoc } from "firebase/firestore";
+import { useSetState } from "@mantine/hooks";
 // NOTE datastoreができるまでのダミーデータ
 const dummyData = {
   token: "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",
@@ -35,8 +37,18 @@ function getAnimationSettings(angle, originX) {
   };
 }
 
-function LogedIn({ user, setToken }) {
-  const [userInfo, setUserInfo] = useState();
+
+=======
+const LogedIn = ({ token, user, setToken }) => {
+  const [userInfo, setUserInfo] = useSetState({
+    name: "",
+    path: "",
+    repo: "",
+    token: "",
+    weight: 0,
+  });
+  const [mets, setMets] = useSetState({});
+
   const { reward: rewardfun1, isAnimating1 } = useReward(
     "rewardId1",
     "confetti",
@@ -123,6 +135,20 @@ function LogedIn({ user, setToken }) {
     setIntervalId(null);
     refAnimationInstance.current && refAnimationInstance.current.reset();
   }, [intervalId]);
+  const check = async () => {
+    const docRef = doc(db, "users", user.uid);
+    await getDoc(docRef)
+      .then((data) => {
+        data.exists() ? setUserInfo(data.data()) : setUserInfo("yet");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    check();
+    // console.log(userInfo.weight);
+  }, []);
 
   const handleGrowGrass = () => {
     console.log("called methods");
@@ -142,7 +168,7 @@ function LogedIn({ user, setToken }) {
 
   return (
     <>
-      {userInfo !== "yet" ? (
+      {userInfo.name !== "" ? (
         <AppShell
           padding="md"
           header={
@@ -150,7 +176,7 @@ function LogedIn({ user, setToken }) {
               <>
                 <Group
                   position="apart"
-                  style={{ marginLeft: 20, marginRight: 20 }}
+                
                 >
                   {/* <Text>{user.displayName}</Text> */}
                   <Button
@@ -168,39 +194,45 @@ function LogedIn({ user, setToken }) {
             </Header>
           }
         >
-          <div>Logedin</div>
-          <div>wwwwwwwwwwwwwwwwwwwww</div>
-          <Select options={options} className="w-96" />
-          <div>時間</div>
-          <NumberInput
-            className="w-fit"
-            defaultValue={50}
-            placeholder="体重を入力してください"
-            label="体重を入力してください"
-            withAsterisk
-          />
-          <div>時間</div>
-          <div className="flex items-center">
-            <NumberInput className="w-20" defaultValue={50} withAsterisk />
-            <span className="text-xl">分</span>
-          </div>
-          <Button
-            disabled={isAnimating1}
-            onClick={() => {
-              rewardfun1();
-              rewardfun2();
-              rewardfun3();
-              rewardfun4();
-              rewardfun5();
-              rewardfun6();
-              startAnimation();
-              setTimeout(pauseAnimation, 2000);
-              handleGrowGrass();
-            }}
-            radius="md"
-          >
-            送信
-          </Button>
+
+
+          <Stack align="center">
+            <div>wwwwwwwwwwwwwwwwwwwww</div>
+            <Select options={options} className="w-96" />
+            <div>{userInfo.weight}</div>
+            <NumberInput
+              className="w-fit"
+              value={userInfo.weight}
+              onChange={(val) => {
+                setUserInfo({ weight: val });
+              }}
+              placeholder="体重を入力してください"
+              // label="体重を入力してください"
+              withAsterisk
+            />
+            <div>時間</div>
+            <div className="flex items-center">
+              <NumberInput className="w-20" defaultValue={50} withAsterisk />
+              <span className="text-xl">分</span>
+            </div>
+            <Button
+              disabled={isAnimating1}
+              onClick={() => {
+                rewardfun1();
+                rewardfun2();
+                rewardfun3();
+                rewardfun4();
+                rewardfun5();
+                rewardfun6();
+                startAnimation();
+                setTimeout(pauseAnimation, 2000);
+              }}
+              radius="md"
+            >
+              送信
+            </Button>
+          </Stack>
+
           <div className="flex flex-col">
             <span id="rewardId1" className="bg-orange-500 w-fit">
               wwwwww
@@ -244,6 +276,6 @@ function LogedIn({ user, setToken }) {
       )}
     </>
   );
-}
+};
 
 export default LogedIn;

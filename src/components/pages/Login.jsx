@@ -3,14 +3,11 @@ import { signInWithPopup, GithubAuthProvider, signOut } from "firebase/auth";
 import { Button } from "@mantine/core";
 import { auth } from "../../firebase";
 import LogedIn from "./LogedIn";
-
-import NotLogin from "../views/NotLogin";
-
+import { NotLogin } from "../views/NotLogin";
 
 export const Login = () => {
-  const [token, setToken] = useState("あ");
+  const [token, setToken] = useState("");
   const [user, setUser] = useState();
-
   const login = () => {
     const provider = new GithubAuthProvider();
     provider.addScope("repo");
@@ -45,7 +42,6 @@ export const Login = () => {
               login();
             }}
           />
-
         </>
       ) : (
         <>
@@ -54,4 +50,4 @@ export const Login = () => {
       )}
     </>
   );
-}
+};
