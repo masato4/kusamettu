@@ -149,13 +149,7 @@ const LogedIn = ({ token, user, setToken }) => {
   }, []);
 
   const handleGrowGrass = () => {
-    console.log("called methods");
-    restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo).then(
-      () => {
-        console.log("草生やしたったwwwwww");
-      }
-    );
-    
+    restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo);
   };
 
   useEffect(() => {
@@ -172,10 +166,7 @@ const LogedIn = ({ token, user, setToken }) => {
           header={
             <Header height={60} p="xs">
               <>
-                <Group
-                  position="apart"
-                
-                >
+                <Group position="apart">
                   {/* <Text>{user.displayName}</Text> */}
                   <Button
                     onClick={() => {
@@ -192,8 +183,6 @@ const LogedIn = ({ token, user, setToken }) => {
             </Header>
           }
         >
-
-
           <Stack align="center">
             <div>wwwwwwwwwwwwwwwwwwwww</div>
             <Select options={options} className="w-96" />
@@ -224,6 +213,7 @@ const LogedIn = ({ token, user, setToken }) => {
                 rewardfun6();
                 startAnimation();
                 setTimeout(pauseAnimation, 2000);
+                handleGrowGrass();
               }}
               radius="md"
             >
