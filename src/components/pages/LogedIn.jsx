@@ -60,11 +60,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
   const [opened, setOpened] = useState(false);
 
-
-  
-
   const options = selectOption;
-
 
   const refAnimationInstance = useRef(null);
   const [intervalId, setIntervalId] = useState();
@@ -236,7 +232,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               </div>
             </div>
             <Button
-
               onClick={() => {
                 calculateCalorie();
               }}
@@ -245,14 +240,13 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             </Button>
             <Text>{calorie}</Text>
             <Button
-              disabled={isAnimating1}
+              // disabled={isAnimating1}
 
               onClick={() => {
                 startAnimation();
                 setTimeout(pauseAnimation, 2000);
                 addMets();
-               handleGrowGrass();
-
+                handleGrowGrass();
               }}
               radius="md"
               className="mx-[calc(30%)]"
@@ -262,9 +256,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
           </div>
           {/* </Stack> */}
 
-          <div className="flex flex-col h-">
-            wwwwwwwwwww
-          </div>
+          <div className="flex flex-col h-">wwwwwwwwwww</div>
           <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
         </div>
       </AppShell>
