@@ -189,11 +189,33 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 >
                   Logout
                 </Button>
+                <Button
+                  onClick={() => {
+                    setOpened(true);
+                  }}
+                >
+                  Modal
+                </Button>
               </Group>
             </>
           </Header>
         }
       >
+        <Modal
+          opened={opened}
+          onClose={() => {
+            setOpened(false);
+          }}
+        >
+          <UserInfo
+            token={token}
+            user={user}
+            userName={userName}
+            setOpened={setOpened}
+            userInfo={userInfo}
+            setUserInfo={setUserInfo}
+          />
+        </Modal>
         <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
           {/* <Stack align="center" spacing="xl" justify="space-around"> */}
           <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
