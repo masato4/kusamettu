@@ -11,12 +11,6 @@ import ReactCanvasConfetti from "react-canvas-confetti";
 import restApis from "../../tools/githubRestApis";
 import { doc, getDoc } from "firebase/firestore";
 import { useSetState } from "@mantine/hooks";
-// NOTE datastoreができるまでのダミーデータ
-const dummyData = {
-  token: "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",
-  name: "yashiro-ryo",
-  repo: "github-grass-grow",
-};
 
 const canvasStyles = {
   position: "fixed",
@@ -151,13 +145,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
   const handleGrowGrass = () => {
     console.log("called methods");
-    restApis
-      .growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo)
-      .then(() => {
-        console.log("草生やしたったwwwwww");
-      });
-
-    restApis.growGrassToGithub(dummyData.token, dummyData.name, dummyData.repo);
+    restApis.growGrassToGithub(userInfo.token, userInfo.name, userInfo.repo);
   };
 
   const test = (e) => {
@@ -268,6 +256,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 rewardfun6();
                 startAnimation();
                 setTimeout(pauseAnimation, 2000);
+                handleGrowGrass();
               }}
               radius="md"
               className="mx-[calc(30%)]"
