@@ -21,7 +21,7 @@ function LogedIn({ user, setToken }) {
               <>
                 <Group
                   position="apart"
-                  style={{ marginLeft: 20, marginRight: 20 }}
+                
                 >
                   <Text>{user.displayName}</Text>
                   <Button
