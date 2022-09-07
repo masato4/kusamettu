@@ -22,6 +22,7 @@ import {
   doc,
   getDoc,
   increment,
+  serverTimestamp,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -121,6 +122,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       do: mets[1],
       mets: mets[0],
       time: Math.round((minutes / 60) * 10) / 10,
+      timestamp: serverTimestamp(),
     });
   };
   useEffect(() => {
