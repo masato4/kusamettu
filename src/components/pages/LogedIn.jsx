@@ -160,7 +160,7 @@ const LogedIn = ({ token, user, setToken }) => {
 
   return (
     <>
-      {userInfo.name === "" ? (
+      {userInfo.name !== "" ? (
         <AppShell
           padding="md"
           header={
