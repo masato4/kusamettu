@@ -3,6 +3,7 @@ import { signInWithPopup, GithubAuthProvider, signOut } from "firebase/auth";
 import { Button } from "@mantine/core";
 import { auth } from "../../firebase";
 import LogedIn from "./LogedIn";
+import { NotLogin } from "../views/NotLogin";
 
 import NotLogin from "../views/NotLogin";
 
@@ -38,6 +39,7 @@ export const Login = () => {
   return (
     <>
       {token === "" ? (
+
         <>
           <NotLogin
             login={() => {
