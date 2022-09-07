@@ -169,134 +169,124 @@ const LogedIn = ({ token, user, setToken }) => {
 
   return (
     <>
-      {true ? (
-        <>
-          <AppShell
-            padding="md"
-            header={
-              <Header height={60} p="xs">
-                <>
-                  <Group position="apart">
-                    {/* <Text>{user.displayName}</Text> */}
-                    <Button
-                      onClick={() => {
-                        signOut(auth).then((result) => {
-                          console.log(result);
-                          setToken("");
-                        });
-                      }}
-                    >
-                      Logout
-                    </Button>
-                  </Group>
-                </>
-              </Header>
-            }
-          >
-            <>
-              <Modal onClose={() => setOpened(false)} opened={opened}>
-                <UserInfo
-                  setUserInfo={setUserInfo}
-                  userInfo={userInfo}
-                  token={token}
-                  user={user}
-                  setOpened={setOpened}
-                />
-              </Modal>
-              <Stack align="center">
-                <div>wwwwwwwwwwwwwwwwwwwww</div>
-                <Select options={options} className="w-96" />
-                <div>{userInfo.weight}</div>
-                <NumberInput
-                  className="w-fit"
-                  value={userInfo.weight}
-                  onChange={(val) => {
-                    setUserInfo({ weight: val });
-                  }}
-                  placeholder="体重を入力してください"
-                  // label="体重を入力してください"
-                  withAsterisk
-                />
-                <div>時間</div>
-                <div className="flex items-center">
-                  <NumberInput
-                    className="w-20"
-                    defaultValue={50}
-                    withAsterisk
-                  />
-                  <span className="text-xl">分</span>
-                </div>
-                <Button
-                  disabled={isAnimating1}
-                  onClick={() => {
-                    rewardfun1();
-                    rewardfun2();
-                    rewardfun3();
-                    rewardfun4();
-                    rewardfun5();
-                    rewardfun6();
-                    startAnimation();
-                    setTimeout(pauseAnimation, 2000);
-                  }}
-                  radius="md"
-                >
-                  送信
-                </Button>
-              </Stack>
-
-              <div className="flex flex-col">
-                <span id="rewardId1" className="bg-orange-500 w-fit">
-                  wwwwww
-                </span>
-                <span
-                  id="rewardId2"
-                  className="bg-orange-500 w-fit absolute right-11"
-                >
-                  wwwwww
-                </span>
-                <span id="rewardId3" className="bg-orange-500 w-fit">
-                  wwwwww
-                </span>
-                <span
-                  id="rewardId4"
-                  className="bg-orange-500 w-fit absolute top-72 right-60"
-                >
-                  wwwwww
-                </span>
-                <span id="rewardId5" className="bg-orange-500 w-fit">
-                  wwwwww
-                </span>
-                <span
-                  id="rewardId6"
-                  className="bg-orange-500 w-fit absolute bottom-44 right-11"
-                >
-                  wwwwww
-                </span>
-              </div>
-              <div>
-                <button onClick={startAnimation}>Start</button>
-                <button onClick={pauseAnimation}>Pause</button>
-                <button onClick={stopAnimation}>Stop</button>
+      <>
+        <AppShell
+          padding="md"
+          header={
+            <Header height={60} p="xs">
+              <>
+                <Group position="apart">
+                  {/* <Text>{user.displayName}</Text> */}
+                  <Button
+                    onClick={() => {
+                      signOut(auth).then((result) => {
+                        console.log(result);
+                        setToken("");
+                      });
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </Group>
+              </>
+            </Header>
+          }
+        >
+          <>
+            <Modal onClose={() => setOpened(false)} opened={opened}>
+              <UserInfo
+                setUserInfo={setUserInfo}
+                userInfo={userInfo}
+                token={token}
+                user={user}
+                setOpened={setOpened}
+              />
+            </Modal>
+            <Stack align="center">
+              <div>wwwwwwwwwwwwwwwwwwwww</div>
+              <Select options={options} className="w-96" />
+              <div>{userInfo.weight}</div>
+              <NumberInput
+                className="w-fit"
+                value={userInfo.weight}
+                onChange={(val) => {
+                  setUserInfo({ weight: val });
+                }}
+                placeholder="体重を入力してください"
+                // label="体重を入力してください"
+                withAsterisk
+              />
+              <div>時間</div>
+              <div className="flex items-center">
+                <NumberInput className="w-20" defaultValue={50} withAsterisk />
+                <span className="text-xl">分</span>
               </div>
               <Button
+                disabled={isAnimating1}
                 onClick={() => {
-                  setOpened(true);
+                  rewardfun1();
+                  rewardfun2();
+                  rewardfun3();
+                  rewardfun4();
+                  rewardfun5();
+                  rewardfun6();
+                  startAnimation();
+                  setTimeout(pauseAnimation, 2000);
                 }}
+                radius="md"
               >
-                modal
+                送信
               </Button>
-              <ReactCanvasConfetti
-                refConfetti={getInstance}
-                style={canvasStyles}
-              />
-            </>
-          </AppShell>
-        </>
-      ) : (
-        <>
-          <UserInfo setUserInfo={setUserInfo} token={token} user={user} />
-        </>
-      )}
+            </Stack>
+
+            <div className="flex flex-col">
+              <span id="rewardId1" className="bg-orange-500 w-fit">
+                wwwwww
+              </span>
+              <span
+                id="rewardId2"
+                className="bg-orange-500 w-fit absolute right-11"
+              >
+                wwwwww
+              </span>
+              <span id="rewardId3" className="bg-orange-500 w-fit">
+                wwwwww
+              </span>
+              <span
+                id="rewardId4"
+                className="bg-orange-500 w-fit absolute top-72 right-60"
+              >
+                wwwwww
+              </span>
+              <span id="rewardId5" className="bg-orange-500 w-fit">
+                wwwwww
+              </span>
+              <span
+                id="rewardId6"
+                className="bg-orange-500 w-fit absolute bottom-44 right-11"
+              >
+                wwwwww
+              </span>
+            </div>
+            <div>
+              <button onClick={startAnimation}>Start</button>
+              <button onClick={pauseAnimation}>Pause</button>
+              <button onClick={stopAnimation}>Stop</button>
+            </div>
+            <Button
+              onClick={() => {
+                setOpened(true);
+              }}
+            >
+              modal
+            </Button>
+            <ReactCanvasConfetti
+              refConfetti={getInstance}
+              style={canvasStyles}
+            />
+          </>
+        </AppShell>
+      </>
     </>
   );
 };
