@@ -123,6 +123,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       mets: mets[0],
       time: Math.round((minutes / 60) * 10) / 10,
       timestamp: serverTimestamp(),
+      calorie: calorie,
     });
   };
   useEffect(() => {
