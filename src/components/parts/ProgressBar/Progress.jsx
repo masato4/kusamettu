@@ -6,7 +6,7 @@ export const Progress = (props) => {
   return (
     <>
     <CommitProgress message={"コミット中"}/>
-    <progress className="progress progress-error w-56" value={props.value} max="100"></progress>
+    <progress color="lime" className="progress progress-success w-56" value={props.value} max="100"></progress>
     </>
   )
 }
