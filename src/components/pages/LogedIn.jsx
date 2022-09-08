@@ -68,7 +68,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   // const [mets, setMets] = useState();
   const [value, setValue] = useState();
   const [opened, setOpened] = useState(false);
-
+  const [diffTime, setDiffTime] = useState(0);
   const options = selectOption;
 
   const refAnimationInstance = useRef(null);
@@ -139,6 +139,9 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       timestamp: serverTimestamp(),
       calorie: calorie,
     });
+    updateDoc(doc(db, "users", user.uid), {
+      calorie: increment(calorie),
+    });
   };
   // metsをfirestoreから取得して、日付ごとに集計
   const getMets = async () => {
@@ -167,7 +170,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
   useEffect(() => {
     check();
-    console.log(userInfo);
     // console.log(userInfo.weight);
   }, [opened]);
 
@@ -184,6 +186,10 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   }, [intervalId]);
   useEffect(() => {
     getMets();
+    const last = user.metadata.lastLoginAt;
+    const today = new Date().getTime();
+    const diff = today - last;
+    setDiffTime(Math.floor(diff / 1000 / 60 / 60) % 60);
   }, []);
 
   return (
@@ -326,7 +332,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             <Segmented userName={userName} log={log} values={value} />
           </div>
 
-          <PandaYoko></PandaYoko>
+          <PandaYoko diff={diffTime} calorie={userInfo.calorie}></PandaYoko>
         </div>
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />

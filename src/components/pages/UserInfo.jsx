@@ -37,10 +37,11 @@ const UserInfo = ({
   const addUserInfo = () => {
     const docref = doc(db, "users", user.uid);
     setDoc(docref, {
-      name: name,
+      name: userName,
       token: token,
       repo: repo,
       weight: weight,
+      calorie: 0,
     });
 
     console.log("userName: " + userInfo.name);
