@@ -320,7 +320,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             送信
           </Button>
         </div>
-        <Segmented log={log} values={value} />
+        <Segmented log={log} values={value} userName={userName} />
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
         {/* </Container> */}
