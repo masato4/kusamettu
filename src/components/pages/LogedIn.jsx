@@ -121,16 +121,14 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   const [mets, setMets] = useState();
   const [minutes, setMinutes] = useState();
   const [calorie, setCalorie] = useState();
+  const [log, setLog] = useState();
 
+  // カロリーを集計
   const calculateCalorie = () => {
     const calcu = Math.round(((mets[0] * minutes) / 60) * userInfo.weight);
     setCalorie(calcu);
-    console.log(calorie);
   };
-  const update = () =>
-    updateDoc(doc(db, "users", user.uid), {
-      calorie: increment(calorie),
-    });
+
   const addMets = () => {
     const docRef = collection(db, "users", user.uid, "mets");
     setDoc(doc(docRef), {
@@ -141,16 +139,23 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       calorie: calorie,
     });
   };
+  // metsをfirestoreから取得して、日付ごとに集計
   const getMets = async () => {
     const q = query(collection(db, "users", user.uid, "mets"));
     const querySnapshot = await getDocs(q);
-    const dateData = {};
+    let dateData = {};
+    let dateLog = {};
     querySnapshot.forEach((doc) => {
       const date = doc.data().timestamp.toDate().toJSON().split("T")[0];
       dateData[date]
         ? (dateData[date] += doc.data().mets)
         : (dateData[date] = doc.data().mets);
+
+      dateLog[date]
+        ? dateLog[date].push(doc.data())
+        : (dateLog[date] = [doc.data()]);
     });
+    setLog(dateLog);
     const valueData = [];
     Object.entries(dateData).map((e) => {
       valueData.push({ date: e[0], count: Math.round(e[1]) });
@@ -158,6 +163,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
     setValue(valueData);
     console.log(value);
   };
+
   useEffect(() => {
     check();
     console.log(userInfo);
@@ -167,7 +173,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   const handleGrowGrass = () => {
     console.log("called methods");
     console.log("メッツ量 :" + mets[0]);
-    restApis.growGrassToGithub(userInfo.token, userInfo.name, userInfo.repo);
+    restApis.growGrassToGithub(userInfo.token, userName, userInfo.repo);
   };
 
   useEffect(() => {
@@ -306,6 +312,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                     setTimeout(pauseAnimation, 2000);
                     addMets();
                     handleGrowGrass();
+                    getMets();
                   }}
                   radius="md"
                   className="mx-[calc(30%)]"
@@ -313,7 +320,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   送信
                 </Button>
               </div>
-              <Segmented values={value} />
+              <Segmented log={log} values={value} />
             </div>
           </div>
 

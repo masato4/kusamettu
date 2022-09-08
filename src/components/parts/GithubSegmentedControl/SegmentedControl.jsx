@@ -2,7 +2,7 @@ import { SegmentedControl } from "@mantine/core";
 import { useState } from "react";
 import { GithubCalendar } from "../GithubExerciseCalendar/GithubCalendar";
 
-export const Segmented = ({ values }) => {
+export const Segmented = ({ values, log }) => {
   const [value, setValue] = useState("react");
   return (
     <div>
@@ -14,7 +14,7 @@ export const Segmented = ({ values }) => {
         value={value}
         onChange={setValue}
       />
-      {value === "react" ? <GithubCalendar values={values} /> : <></>}
+      {value === "react" ? <GithubCalendar log={log} values={values} /> : <></>}
     </div>
   );
 };

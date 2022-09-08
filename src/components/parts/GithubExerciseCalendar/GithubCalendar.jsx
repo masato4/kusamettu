@@ -1,15 +1,40 @@
+import { Divider, Modal, Stack, Text } from "@mantine/core";
+import { useHover } from "@mantine/hooks";
+import { useState } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import ReactTooltip from "react-tooltip";
 import "./style.css";
 
-export const GithubCalendar = ({ values }) => {
+export const GithubCalendar = ({ log, values }) => {
   const date = new Date();
+  // const [hover, setRef] = useHover();
   const startDate = date.setFullYear(date.getFullYear() - 1);
-  // const endDate = date.setFullYear(date.getFullYear() + 1);
-  console.log(values);
+  const [open, setOpen] = useState(false);
+  const [modalValue, setModalValue] = useState();
+  const [logDate, setDate] = useState();
   return (
     <>
+      <Modal
+        opened={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        size="lg"
+      >
+        <Text className="m-3">{logDate && logDate}</Text>
+        <Divider />
+        <Stack className="m-1">
+          {modalValue &&
+            modalValue.map((e) => (
+              <>
+                <Text>
+                  {e.do}:{e.mets} {e.time}時間
+                </Text>
+              </>
+            ))}
+        </Stack>
+      </Modal>
       <div className="container">
         <h1 className="font-mono">運動コントリビューション</h1>
         <div>
@@ -27,13 +52,18 @@ export const GithubCalendar = ({ values }) => {
               return `color-scale-${value.count}`;
             }}
             tooltipDataAttrs={(value) => {
-              if (!value || !value.date) {
+              if (!value.date) {
                 return null;
               }
               // react-tooltipの構成
               return {
-                "data-tip": `${value.date} has count: ${value.count}\nカロリー:2`,
+                "data-tip": `${value.date} has ${value.count} mets `,
               };
+            }}
+            onClick={(value) => {
+              value && setOpen(true);
+              value && setModalValue(log[value.date]);
+              value && setDate(value.date);
             }}
           />
         </div>
