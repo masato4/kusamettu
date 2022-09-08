@@ -213,6 +213,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                         setToken("");
                       });
                     }}
+                    color="green"
                   >
                     Logout
                   </Button>
@@ -296,6 +297,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 }}
                 className="mx-[calc(30%)] mt-[calc(5%)]"
                 radius="md"
+                color="green"
               >
                 カロリーの計算
               </Button>
@@ -316,6 +318,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 }}
                 radius="md"
                 className="mx-[calc(30%)]"
+                color="green"
               >
                 送信
               </Button>
