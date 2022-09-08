@@ -2,9 +2,11 @@ import "./styles.css";
 import { Scene, SceneItem } from "react-scenejs";
 import { BambooRender } from "./BambooRender";
 import { useEffect, useState } from "react";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
-export function PandaYoko({ calorie }) {
-  const [bamboo, setBamboo] = useState(0);
+export function PandaYoko({ calorie, user }) {
+  const [bamboo, setBamboo] = useState(1);
   const [bambooX, setBambooX] = useState([]);
   const keyframes = {
     ".arm.right": {
@@ -118,6 +120,9 @@ export function PandaYoko({ calorie }) {
   useEffect(() => {
     if (Math.floor(calorie / 5) == 0) {
       setBamboo(0);
+      updateDoc(doc(db, "users", user.uid), {
+        dead: new Date(),
+      });
     } else {
       setBamboo(1);
     }
@@ -128,8 +133,8 @@ export function PandaYoko({ calorie }) {
     }
     aaa.push(parseInt(Math.floor(calorie / 5)) % 14);
     setBambooX(aaa);
-    console.log(aaa);
-  }, []);
+    console.log(Math.floor(calorie / 5));
+  }, [calorie]);
   return (
     <>
       <div className="relative">

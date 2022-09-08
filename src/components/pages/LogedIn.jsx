@@ -57,13 +57,13 @@ function getAnimationSettings(angle, originX) {
   };
 }
 
-const LogedIn = ({ token, user, setToken, userName }) => {
+const LogedIn = ({ token, user, setToken, userName, diff }) => {
   const [userInfo, setUserInfo] = useSetState({
     name: "",
     repo: "",
     token: "",
     weight: 0,
-    calorie: 0,
+    calories: 0,
   });
   // const [mets, setMets] = useState();
   const [value, setValue] = useState();
@@ -111,7 +111,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               repo: data.data().repo,
               token: data.data().token,
               weight: data.data().weight,
-              calorie: data.data().calorie,
+              calories: data.data().calories,
             })
           : setOpened(true);
       })
@@ -140,7 +140,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       calorie: calorie,
     });
     updateDoc(doc(db, "users", user.uid), {
-      calorie: increment(calorie),
+      calories: increment(calorie),
     });
   };
   // metsをfirestoreから取得して、日付ごとに集計
@@ -320,6 +320,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   handleGrowGrass();
                   getMets();
                   check();
+                  console.log(userInfo);
                 }}
                 radius="md"
                 className="mx-[calc(30%)]"
@@ -331,7 +332,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             <Segmented userName={userName} log={log} values={value} />
           </div>
 
-          <PandaYoko calorie={userInfo.calorie}></PandaYoko>
+          <PandaYoko user={user} calorie={userInfo.calories}></PandaYoko>
         </div>
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
