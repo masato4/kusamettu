@@ -323,7 +323,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 送信
               </Button>
             </div>
-            <Segmented userName={userName} log={log} values={value} />{" "}
+            <Segmented userName={userName} log={log} values={value} />
           </div>
 
           <PandaYoko></PandaYoko>
