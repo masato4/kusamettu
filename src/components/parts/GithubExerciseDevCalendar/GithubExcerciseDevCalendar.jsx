@@ -44,8 +44,7 @@ export const GithubExcerciseDevCalendar = ({ userName }) => {
   data && console.log(valueData);
   return (
     <>
-      <div className="container">
-        <h1 className="font-mono">運動+開発コントリビューション</h1>
+      <div>
         <div>
           <CalendarHeatmap
             // ここでfirestoreからデートを取得して当てる
