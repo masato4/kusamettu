@@ -19,7 +19,7 @@ import ReactCanvasConfetti from "react-canvas-confetti";
 
 import { AiOutlineSetting, AiOutlineInfoCircle } from "react-icons/ai";
 
-import restApis from "../../tools/githubRestApis";
+import createCommitApi from "../../tools/githubAPI/createCommit";
 import {
   collection,
   doc,
@@ -150,7 +150,12 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   const handleGrowGrass = () => {
     console.log("called methods");
     console.log("メッツ量 :" + mets[0]);
-    restApis.growGrassToGithub(userInfo.token, userInfo.name, userInfo.repo);
+    createCommitApi(
+      userInfo.token,
+      userName,
+      userInfo.repo,
+      mets[0]
+    );
   };
 
   useEffect(() => {
