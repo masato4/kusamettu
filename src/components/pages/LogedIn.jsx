@@ -36,7 +36,6 @@ import { GithubCalendar } from "../parts/GithubExerciseCalendar/GithubCalendar";
 import { Segmented } from "../parts/GithubSegmentedControl/SegmentedControl";
 import { selectOption } from "../../mets";
 import { Progress } from "../parts/ProgressBar/Progress";
-import { CommitProgress } from "../parts/CommitProgressMessage/CommitProgress";
 
 const canvasStyles = {
   position: "fixed",
@@ -181,7 +180,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       userName,
       userInfo.repo,
       mets[0],
-      
+
     );
   };
 
@@ -207,7 +206,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   <Text>{user.displayName}</Text>
                 </Group>
                 <Group>
-                  <CommitProgress message={"コミット中"}/>
+             
                   {/* プログレスバー */}
                   <Progress value={50} />
                 

@@ -4,5 +4,4 @@ export const CommitProgress = (props) => {
       <p>{props.message}</p>
     </div>
   )
-  
 }
