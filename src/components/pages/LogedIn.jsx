@@ -16,7 +16,9 @@ import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
 import { NumberInput } from "@mantine/core";
 import ReactCanvasConfetti from "react-canvas-confetti";
+
 import { AiOutlineSetting, AiOutlineInfoCircle } from "react-icons/ai";
+
 import restApis from "../../tools/githubRestApis";
 import {
   collection,
@@ -30,6 +32,8 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useSetState } from "@mantine/hooks";
+import { GithubCalendar } from "../parts/GithubExerciseCalendar/GithubCalendar";
+import { Segmented } from "../parts/GithubSegmentedControl/SegmentedControl";
 
 import { selectOption } from "../../mets";
 
@@ -41,6 +45,7 @@ const canvasStyles = {
   top: 0,
   left: 0,
 };
+
 
 function getAnimationSettings(angle, originX) {
   return {
@@ -211,6 +216,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             setUserInfo={setUserInfo}
           />
         </Modal>
+
         <Container>
           <div className="grid grid-cols-1 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
             <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
@@ -291,13 +297,29 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               </Button>
             </div>
 
-            {/* <div className="flex flex-col h-">wwwwwwwwwww</div> */}
+          
+            <Segmented />
+
+            {/* <div className="mt-20">
+              <GithubCalendar />
+            </div> */}
+           
+          </div>
+        
+          
+         
+          {/* <div className="flex flex-col h-">wwwwwwwwwww</div> */}
             <ReactCanvasConfetti
               refConfetti={getInstance}
               style={canvasStyles}
             />
+        </div>
+
+
+            
           </div>
         </Container>
+
       </AppShell>
     </>
   );
