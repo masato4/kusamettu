@@ -1,17 +1,41 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { AppShell, Button, Group, Header, Modal, Stack } from "@mantine/core";
+import {
+  AppShell,
+  Button,
+  Group,
+  Header,
+  Modal,
+  Select,
+  Text,
+  ActionIcon,
+  Avatar,
+  Container,
+} from "@mantine/core";
 import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
-import Select from "react-select";
 import { NumberInput } from "@mantine/core";
-import { useReward } from "react-rewards";
 import ReactCanvasConfetti from "react-canvas-confetti";
+
+import { AiOutlineSetting, AiOutlineInfoCircle } from "react-icons/ai";
+
 import restApis from "../../tools/githubRestApis";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  increment,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useSetState } from "@mantine/hooks";
 import { GithubCalendar } from "../parts/GithubExerciseCalendar/GithubCalendar";
 import { Segmented } from "../parts/GithubSegmentedControl/SegmentedControl";
+
+import { selectOption } from "../../mets";
 
 const canvasStyles = {
   position: "fixed",
@@ -39,21 +63,13 @@ const LogedIn = ({ token, user, setToken, userName }) => {
     repo: "",
     token: "",
     weight: 0,
+    calorie: 0,
   });
-  // const [mets, setMets] = useSetState({});
+  // const [mets, setMets] = useState();
+
   const [opened, setOpened] = useState(false);
 
-  const options = [
-    { value: "ストレッチング2.3メッツ", label: "ストレッチング2.3メッツ" },
-    {
-      value: 3,
-      label: "バレーボール、ボウリング3メッツ",
-    },
-    {
-      value: "サーフィン、ソフトボール5メッツ",
-      label: "Vサーフィン、ソフトボール5メッツ",
-    },
-  ];
+  const options = selectOption;
 
   const refAnimationInstance = useRef(null);
   const [intervalId, setIntervalId] = useState();
@@ -95,6 +111,37 @@ const LogedIn = ({ token, user, setToken, userName }) => {
         console.log(err);
       });
   };
+  const [mets, setMets] = useState();
+  const [minutes, setMinutes] = useState();
+  const [calorie, setCalorie] = useState();
+
+  const calculateCalorie = () => {
+    const calcu = Math.round(((mets[0] * minutes) / 60) * userInfo.weight);
+    setCalorie(calcu);
+    console.log(calorie);
+  };
+  const update = () =>
+    updateDoc(doc(db, "users", user.uid), {
+      calorie: increment(calorie),
+    });
+  const addMets = () => {
+    const docRef = collection(db, "users", user.uid, "mets");
+    setDoc(doc(docRef), {
+      do: mets[1],
+      mets: mets[0],
+      time: Math.round((minutes / 60) * 10) / 10,
+      timestamp: serverTimestamp(),
+      calorie: calorie,
+    });
+  };
+  const getMets = async () => {
+    const q = query(collection(db, "users", user.uid, "mets"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.data().timestamp.toDate().toJSON().split("T")[0]);
+    });
+  };
   useEffect(() => {
     check();
     console.log(userInfo);
@@ -103,11 +150,8 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
   const handleGrowGrass = () => {
     console.log("called methods");
+    console.log("メッツ量 :" + mets[0]);
     restApis.growGrassToGithub(userInfo.token, userInfo.name, userInfo.repo);
-  };
-
-  const test = (e) => {
-    console.log(e.value);
   };
 
   useEffect(() => {
@@ -115,6 +159,9 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       clearInterval(intervalId);
     };
   }, [intervalId]);
+  useEffect(() => {
+    getMets();
+  }, []);
 
   return (
     <>
@@ -123,25 +170,31 @@ const LogedIn = ({ token, user, setToken, userName }) => {
         header={
           <Header height={60} p="xs">
             <>
-              <Group position="apart">
+              <Group position="apart" className="mr-7 ml-7">
+                <Group>
+                  <Avatar src={user.photoURL}></Avatar>
+                  <Text>{user.displayName}</Text>
+                </Group>
+                <Group>
+                  <ActionIcon
+                    onClick={() => {
+                      setOpened(true);
+                    }}
+                  >
+                    <AiOutlineSetting></AiOutlineSetting>
+                  </ActionIcon>
+                  <Button
+                    onClick={() => {
+                      signOut(auth).then((result) => {
+                        console.log(result);
+                        setToken("");
+                      });
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </Group>
                 {/* <Text>{user.displayName}</Text> */}
-                <Button
-                  onClick={() => {
-                    signOut(auth).then((result) => {
-                      console.log(result);
-                      setToken("");
-                    });
-                  }}
-                >
-                  Logout
-                </Button>
-                <Button
-                  onClick={() => {
-                    setOpened(true);
-                  }}
-                >
-                  Modal
-                </Button>
               </Group>
             </>
           </Header>
@@ -152,6 +205,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
           onClose={() => {
             setOpened(false);
           }}
+          title="ユーザー情報を入力してください"
         >
           <UserInfo
             token={token}
@@ -162,58 +216,88 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             setUserInfo={setUserInfo}
           />
         </Modal>
-        <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
-          {/* <Stack align="center" spacing="xl" justify="space-around"> */}
-          <div className="grid grid-cols-1 grid-rows-5 place-content-center gap-2">
-            <div className="grid grid-cols-1 grid-rows-2 place-content-center">
-              <span className="text-2xl text-center">メッツを入力</span>
-              <div className="mx-[calc(20%)]">
-                <Select
-                  value={10}
-                  options={options}
-                  onChange={test}
-                  className="min-w-fit w-full"
-                />
-              </div>
-            </div>
-            {/* <div>{userInfo.weight}</div> */}
-            <div className="grid grid-cols-2 grid-rows-1">
-              <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
-                <span className="text-2xl text-center">体重を入力</span>
-                <NumberInput
-                  className="w-full px-10"
-                  value={userInfo.weight}
-                  onChange={(val) => {
-                    setUserInfo({ weight: val });
-                  }}
-                  placeholder="体重を入力してください"
-                  // label="体重を入力してください"
-                  withAsterisk
-                />
-              </div>
-              <div className="grid grid-cols-1 grid-rows-2 place-content-cente h-fit gap-2">
-                <span className="text-2xl text-center">時間を入力</span>
-                <div className="flex items-center mx-10 p-0">
-                  <NumberInput
-                    className="w-full"
-                    defaultValue={50}
-                    withAsterisk
+
+        <Container>
+          <div className="grid grid-cols-1 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
+            <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
+              <div className="grid grid-cols-1 grid-rows-2 place-content-center">
+                <span className="text-2xl text-center">
+                  メッツを入力
+                  {/* <AiOutlineInfoCircle></AiOutlineInfoCircle> */}
+                </span>
+
+                <div className="mx-[calc(20%)]">
+                  <Select
+                    searchable
+                    value={mets}
+                    data={options}
+                    onChange={setMets}
+                    className="min-w-fit w-full"
                   />
-                  <span className="text-xl px-2 py-0 my-0">分</span>
                 </div>
               </div>
+
+              <div className="grid grid-cols-2 grid-rows-1">
+                <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
+                  <span className="text-2xl text-center">体重を入力</span>
+                  <NumberInput
+                    className="w-full px-10"
+                    value={userInfo.weight}
+                    onChange={(val) => {
+                      setUserInfo({ weight: val });
+                    }}
+                    placeholder="体重を入力してください"
+                    // label="体重を入力してください"
+                    withAsterisk
+                  />
+                </div>
+                <div className="grid grid-cols-1 grid-rows-2 place-content-cente h-fit gap-2">
+                  <span className="text-2xl text-center">時間を入力</span>
+                  <div className="flex items-center mx-10 p-0">
+                    <NumberInput
+                      className="w-full"
+                      value={minutes}
+                      withAsterisk
+                      onChange={(val) => {
+                        setMinutes(val);
+                      }}
+                    />
+                    <span className="text-xl px-2 py-0 my-0">分</span>
+                  </div>
+                </div>
+              </div>
+              <Button
+                onClick={() => {
+                  calculateCalorie();
+                }}
+                className="mx-[calc(30%)]"
+                radius="md"
+              >
+                カロリーの計算
+              </Button>
+              <div className="grid grid-cols-1 grid-rows-1 place-content-center">
+                <Text className="items-center text-xl text-center">
+                  {calorie}kcal
+                </Text>
+              </div>
+
+              <Button
+                // disabled={isAnimating1}
+
+                onClick={() => {
+                  startAnimation();
+                  setTimeout(pauseAnimation, 2000);
+                  addMets();
+                  handleGrowGrass();
+                }}
+                radius="md"
+                className="mx-[calc(30%)]"
+              >
+                送信
+              </Button>
             </div>
-            <Button
-              onClick={() => {
-                startAnimation();
-                setTimeout(pauseAnimation, 2000);
-                handleGrowGrass();
-              }}
-              radius="md"
-              className="mx-[calc(30%)]"
-            >
-              送信
-            </Button>
+
+          
             <Segmented />
 
             {/* <div className="mt-20">
@@ -221,13 +305,21 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             </div> */}
            
           </div>
-          {/* </Stack> */}
+        
           
-          <div className="flex flex-col h-">
-            wwwwwwwwwww
-          </div>
-          <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
+         
+          {/* <div className="flex flex-col h-">wwwwwwwwwww</div> */}
+            <ReactCanvasConfetti
+              refConfetti={getInstance}
+              style={canvasStyles}
+            />
         </div>
+
+
+            
+          </div>
+        </Container>
+
       </AppShell>
     </>
   );
