@@ -210,13 +210,7 @@ export function PandaYoko({ diff, calorie }) {
                     </div>
                     }
                     </div>
-
                 </div>
-              </div>
-            </div>
-          </Scene>
-        </div>
-      </div>
     </>
   );
 }
