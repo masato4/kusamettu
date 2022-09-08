@@ -46,7 +46,6 @@ const canvasStyles = {
   left: 0,
 };
 
-
 function getAnimationSettings(angle, originX) {
   return {
     particleCount: 3,
@@ -296,30 +295,15 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 送信
               </Button>
             </div>
-
-          
             <Segmented />
-
             {/* <div className="mt-20">
               <GithubCalendar />
             </div> */}
-           
           </div>
-        
-          
-         
+
           {/* <div className="flex flex-col h-">wwwwwwwwwww</div> */}
-            <ReactCanvasConfetti
-              refConfetti={getInstance}
-              style={canvasStyles}
-            />
-        </div>
-
-
-            
-          </div>
+          <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
         </Container>
-
       </AppShell>
     </>
   );
