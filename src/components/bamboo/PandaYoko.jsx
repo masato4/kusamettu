@@ -1,121 +1,117 @@
-import "./styles.css"
+import "./styles.css";
 import { Scene, SceneItem } from "react-scenejs";
-import { BambooRender } from "./BambooRender"
+import { BambooRender } from "./BambooRender";
 import { useState } from "react";
 
 
-export function PandaYoko() {
-    const [bamboo, setBamboo] = useState(0)
-    const [bambooX, setBambooX] = useState([])
-    const keyframes = {
-        ".arm.right": {
-            0: "transform: rotate(90deg)",
-            1.5: "transform: rotate(-75deg)",
-            8: "transform: rotate(-75deg)",
-            9: "transform: rotate(90deg)",
-        },
-        ".arm.right .forearm": {
-            0: "transform: rotate(0deg)",
-            1.5: "transform: rotate(-15deg)",
-            2: "transform: rotate(-25deg)",
-            2.5: "transform: rotate(-15deg)",
-            3: "transform: rotate(-25deg)",
-            3.5: "transform: rotate(-15deg)",
-            4: "transform: rotate(-25deg)",
-            4.5: "transform: rotate(-15deg)",
-            5: "transform: rotate(-25deg)",
-            5.5: "transform: rotate(-15deg)",
-            6: "transform: rotate(-25deg)",
-            6.5: "transform: rotate(-15deg)",
-            7: "transform: rotate(-25deg)",
-            7.5: "transform: rotate(-15deg)",
-            8: "transform: rotate(-25deg)",
-            9: "transform: rotate(0deg)",
-        },
-        ".arm.right .hand": {
-            0.5: "transform: rotate(0deg)",
-            1.5: "transform: rotate(-60deg)",
-            8: "transform: rotate(-60deg)",
-            9: "transform: rotate(  0deg)",
-        },
-        ".arm.left": {
-            0: "transform: rotate(0deg)",
-            1.5: "transform: rotate(-60deg)",
-            8: "transform: rotate(-60deg)",
-            9: "transform: rotate(0deg)",
-        },
-        ".arm.left .forearm": {
-            0: "transform: rotate(-40deg)",
-            1.5: "transform: rotate(-20deg)",
-            2: "transform: rotate(-30deg)",
-            2.5: "transform: rotate(-20deg)",
-            3: "transform: rotate(-30deg)",
-            3.5: "transform: rotate(-20deg)",
-            4: "transform: rotate(-30deg)",
-            4.5: "transform: rotate(-20deg)",
-            5: "transform: rotate(-30deg)",
-            5.5: "transform: rotate(-20deg)",
-            6: "transform: rotate(-30deg)",
-            6.5: "transform: rotate(-20deg)",
-            7: "transform: rotate(-30deg)",
-            7.5: "transform: rotate(-20deg)",
-            8: "transform: rotate(-30deg)",
-            9: "transform: rotate(-40deg)",
-        },
-        ".arm.left .hand": {
-            0: "transform: rotate(0deg)",
-            1.5: "transform: rotate(-40deg)",
-            8: "transform: rotate(-40deg)",
-            9: "transform: rotate(0deg)",
-        },
-        ".mouth": {
-            0: "transform: translateY(0px)",
-            0.5: "transform: translateY(9px)",
-            options: {
-                delay: 1,
-                iterationCount: 14,
-                direction: "alternate",
-            },
-        },
-        ".hand .bamboo": {
-            1.5: {
-                height: "166px",
-            },
-            2: "height: 140px",
-            2.5: "height: 140px",
-            3: "height: 120px",
-            3.5: "height: 120px",
-            4: "height: 100px",
-            4.5: "height: 100px",
-            5: "height: 80px",
-            5.5: "height: 80px",
-            6: "height: 60px",
-            6.5: "height: 60px",
-            7: "height: 40px",
-            7.5: "height: 40px",
-            8: "height: 0px",
-        },
+export function PandaYoko({ diff, calorie }) {
+  const [bamboo, setBamboo] = useState([]);
+  const [bambooX, setBambooX] = useState([]);
+  const keyframes = {
+    ".arm.right": {
+      0: "transform: rotate(90deg)",
+      1.5: "transform: rotate(-75deg)",
+      8: "transform: rotate(-75deg)",
+      9: "transform: rotate(90deg)",
+    },
+    ".arm.right .forearm": {
+      0: "transform: rotate(0deg)",
+      1.5: "transform: rotate(-15deg)",
+      2: "transform: rotate(-25deg)",
+      2.5: "transform: rotate(-15deg)",
+      3: "transform: rotate(-25deg)",
+      3.5: "transform: rotate(-15deg)",
+      4: "transform: rotate(-25deg)",
+      4.5: "transform: rotate(-15deg)",
+      5: "transform: rotate(-25deg)",
+      5.5: "transform: rotate(-15deg)",
+      6: "transform: rotate(-25deg)",
+      6.5: "transform: rotate(-15deg)",
+      7: "transform: rotate(-25deg)",
+      7.5: "transform: rotate(-15deg)",
+      8: "transform: rotate(-25deg)",
+      9: "transform: rotate(0deg)",
+    },
+    ".arm.right .hand": {
+      0.5: "transform: rotate(0deg)",
+      1.5: "transform: rotate(-60deg)",
+      8: "transform: rotate(-60deg)",
+      9: "transform: rotate(  0deg)",
+    },
+    ".arm.left": {
+      0: "transform: rotate(0deg)",
+      1.5: "transform: rotate(-60deg)",
+      8: "transform: rotate(-60deg)",
+      9: "transform: rotate(0deg)",
+    },
+    ".arm.left .forearm": {
+      0: "transform: rotate(-40deg)",
+      1.5: "transform: rotate(-20deg)",
+      2: "transform: rotate(-30deg)",
+      2.5: "transform: rotate(-20deg)",
+      3: "transform: rotate(-30deg)",
+      3.5: "transform: rotate(-20deg)",
+      4: "transform: rotate(-30deg)",
+      4.5: "transform: rotate(-20deg)",
+      5: "transform: rotate(-30deg)",
+      5.5: "transform: rotate(-20deg)",
+      6: "transform: rotate(-30deg)",
+      6.5: "transform: rotate(-20deg)",
+      7: "transform: rotate(-30deg)",
+      7.5: "transform: rotate(-20deg)",
+      8: "transform: rotate(-30deg)",
+      9: "transform: rotate(-40deg)",
+    },
+    ".arm.left .hand": {
+      0: "transform: rotate(0deg)",
+      1.5: "transform: rotate(-40deg)",
+      8: "transform: rotate(-40deg)",
+      9: "transform: rotate(0deg)",
+    },
+    ".mouth": {
+      0: "transform: translateY(0px)",
+      0.5: "transform: translateY(9px)",
+      options: {
+        delay: 1,
+        iterationCount: 14,
+        direction: "alternate",
+      },
+    },
+    ".hand .bamboo": {
+      1.5: {
+        height: "166px",
+      },
+      2: "height: 140px",
+      2.5: "height: 140px",
+      3: "height: 120px",
+      3.5: "height: 120px",
+      4: "height: 100px",
+      4.5: "height: 100px",
+      5: "height: 80px",
+      5.5: "height: 80px",
+      6: "height: 60px",
+      6.5: "height: 60px",
+      7: "height: 40px",
+      7.5: "height: 40px",
+      8: "height: 0px",
+    },
+  };
+  const chengetext = (e) => {
+    console.log([...Array(e.target.value)]);
+    setBamboo([...Array(parseInt(e.target.value))]);
+  };
+  const chengetext2 = (e) => {
+    console.log([...Array(e.target.value)]);
+    const x = Math.floor(parseInt(e.target.value) / 14);
+    let aaa = [];
+    for (let i = 0; i < x; i++) {
+      aaa.push(14);
+
     }
-    const chengetext = (e) => {
-        console.log([...Array(e.target.value)])
-        setBamboo([...Array(parseInt(e.target.value))])
-    }
-    const chengetext2 = (e) => {
-        if(e.target.value == "0"){
-            setBamboo(0)
-        }else{
-            setBamboo(1)
-        }
-        console.log([...Array(e.target.value)])
-        const x = Math.floor(parseInt(e.target.value) / 14)
-        let aaa = []
-        for (let i = 0; i < x; i++) {
-            aaa.push(14)
-        }
-        aaa.push(parseInt(e.target.value) % 14)
-        setBambooX(aaa)
-        console.log(aaa)
-    }
+    aaa.push(parseInt(e.target.value) % 14);
+    setBambooX(aaa);
+    console.log(aaa);
+  };
 
     return (
 
@@ -155,6 +151,7 @@ export function PandaYoko() {
                         className="min-h-screen"
                     >
                         {/* <div className="container min-h-[calc(100vh)]">
+
               {bamboo.map((x, i) =>{
                 return <PandaYoko offset={i}></PandaYoko>
               })}
@@ -213,7 +210,13 @@ export function PandaYoko() {
                     </div>
                     }
                     </div>
+
                 </div>
-                </>
-    );
+              </div>
+            </div>
+          </Scene>
+        </div>
+      </div>
+    </>
+  );
 }

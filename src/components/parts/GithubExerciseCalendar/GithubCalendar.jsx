@@ -45,8 +45,7 @@ export const GithubCalendar = ({ log, values }) => {
         </Table>
         <Stack className="m-1"></Stack>
       </Modal>
-      <div className="container">
-        <h1 className="font-mono">運動コントリビューション</h1>
+      <div>
         <>
           <CalendarHeatmap
             // ここでfirestoreからデートを取得して当てる

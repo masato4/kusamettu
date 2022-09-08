@@ -9,11 +9,14 @@ import { Button } from "@mantine/core";
 import { auth } from "../../firebase";
 import LogedIn from "./LogedIn";
 import { NotLogin } from "../views/NotLogin";
+import { tokenAtom } from "../../atoms/TokenAtom";
+import { useSetRecoilState } from "recoil";
 
 export const Login = () => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState();
   const [userName, setUserName] = useState("");
+  const setGitToken = useSetRecoilState(tokenAtom);
   const login = () => {
     const provider = new GithubAuthProvider();
     provider.addScope("repo");
@@ -22,6 +25,7 @@ export const Login = () => {
         // This gives you a GitHub Access Token. You can use it to access the GitHub API.
         const credential = GithubAuthProvider.credentialFromResult(result);
         setToken(credential.accessToken);
+        setGitToken(credential.accessToken);
         // The signed-in user info.
         const addInfo = getAdditionalUserInfo(result);
         setUserName(addInfo.username);

@@ -36,7 +36,7 @@ import { GithubCalendar } from "../parts/GithubExerciseCalendar/GithubCalendar";
 import { Segmented } from "../parts/GithubSegmentedControl/SegmentedControl";
 
 import { selectOption } from "../../mets";
-import { PandaYoko } from "../bamboo/PandaYoko"
+import { PandaYoko } from "../bamboo/PandaYoko";
 
 const canvasStyles = {
   position: "fixed",
@@ -68,7 +68,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   // const [mets, setMets] = useState();
   const [value, setValue] = useState();
   const [opened, setOpened] = useState(false);
-
+  const [diffTime, setDiffTime] = useState(0);
   const options = selectOption;
 
   const refAnimationInstance = useRef(null);
@@ -139,6 +139,9 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       timestamp: serverTimestamp(),
       calorie: calorie,
     });
+    updateDoc(doc(db, "users", user.uid), {
+      calorie: increment(calorie),
+    });
   };
   // metsをfirestoreから取得して、日付ごとに集計
   const getMets = async () => {
@@ -167,19 +170,13 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
   useEffect(() => {
     check();
-    console.log(userInfo);
     // console.log(userInfo.weight);
   }, [opened]);
 
   const handleGrowGrass = () => {
     console.log("called methods");
     console.log("メッツ量 :" + mets[0]);
-    createCommitApi(
-      userInfo.token,
-      userName,
-      userInfo.repo,
-      mets[0]
-    );
+    createCommitApi(userInfo.token, userName, userInfo.repo, mets[0]);
   };
 
   useEffect(() => {
@@ -189,6 +186,10 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   }, [intervalId]);
   useEffect(() => {
     getMets();
+    const last = user.metadata.lastLoginAt;
+    const today = new Date().getTime();
+    const diff = today - last;
+    setDiffTime(Math.floor(diff / 1000 / 60 / 60) % 60);
   }, []);
 
   return (
@@ -218,6 +219,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                         setToken("");
                       });
                     }}
+                    color="green"
                   >
                     Logout
                   </Button>
@@ -247,6 +249,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
         {/* <Container className="mx-0 px-0"> */}
 
+
           <div className="grid grid-cols-2 grid-rows-1 place-content-center h-[calc(100vh-110px)] mx-[calc(3%)]">
             <div className="grid grid-cols-1 grid-rows-auto place-content-center gap-5">
               <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit">
@@ -254,6 +257,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   メッツを入力
                   {/* <AiOutlineInfoCircle></AiOutlineInfoCircle> */}
                 </span>
+
               <div className="mx-[calc(20%)]">
                 <Select
                   searchable
@@ -285,61 +289,63 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 <span className="text-2xl text-center">時間を入力</span>
                 <div className="flex items-center mx-10 p-0">
 
-                  <NumberInput
-                    className="w-full"
-                    value={minutes}
-                    withAsterisk
-                    onChange={(val) => {
-                      setMinutes(val);
-                    }}
-                  />
-                  <span className="text-xl px-2 py-0 my-0">分</span>
+
+                
+                      <NumberInput
+                        className="w-full"
+                        value={minutes}
+                        withAsterisk
+                        onChange={(val) => {
+                          setMinutes(val);
+                        }}
+                      />
+                      <span className="text-xl px-2 py-0 my-0">分</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
+              <Button
+                onClick={() => {
+                  calculateCalorie();
+                }}
+                className="mx-[calc(30%)] mt-[calc(5%)]"
+                radius="md"
+                color="green"
+              >
+                カロリーの計算
+              </Button>
+              <div className="grid grid-cols-1 grid-rows-1 place-content-center">
+                <Text className="items-center text-xl text-center">
+                  {calorie}kcal
+                </Text>
+              </div>
+
+              <Button
+                // disabled={isAnimating1}
+                onClick={() => {
+                  startAnimation();
+                  setTimeout(pauseAnimation, 2000);
+                  addMets();
+                  handleGrowGrass();
+                  getMets();
+                }}
+                radius="md"
+                className="mx-[calc(30%)]"
+                color="green"
+              >
+                送信
+              </Button>
             </div>
-          {/* </div> */}
-          <Button
-            onClick={() => {
-              calculateCalorie();
-            }}
-            className="mx-[calc(30%)] mt-[calc(5%)]"
-            radius="md"
-          >
-            カロリーの計算
-          </Button>
-          <div className="grid grid-cols-1 grid-rows-1 place-content-center">
-            <Text className="items-center text-xl text-center">
-              {calorie}kcal
-            </Text>
+            <Segmented userName={userName} log={log} values={value} />
+
           </div>
 
-          <Button
-            // disabled={isAnimating1}
-            onClick={() => {
-              startAnimation();
-              setTimeout(pauseAnimation, 2000);
-              addMets();
-              handleGrowGrass();
-              getMets();
-            }}
-            radius="md"
-            className="mx-[calc(30%)]"
-          >
-            送信
-          </Button>
-          </div>
-          <Segmented log={log} values={value} /> 
-          </div>
-            
-           
-            <PandaYoko></PandaYoko>
-          </div>
+          <PandaYoko diff={diffTime} calorie={userInfo.calorie}></PandaYoko>
+        </div>
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-        
       </AppShell>
-      
     </>
   );
 };
