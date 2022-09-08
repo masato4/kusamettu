@@ -11,6 +11,8 @@ const UserInfo = ({
   userInfo,
   setOpened,
   userName,
+  statusMessage,
+  setStatusMessage,
 }) => {
   const [repo, setRepo] = useState(userInfo?.repo || "");
   const [weight, setWeight] = useState(userInfo?.weight || "");
@@ -35,6 +37,7 @@ const UserInfo = ({
   };
 
   const addUserInfo = () => {
+    setStatusMessage("リポジトリ生成中");
     const docref = doc(db, "users", user.uid);
     setDoc(docref, {
       name: name,
@@ -47,8 +50,14 @@ const UserInfo = ({
     console.log("token :" + token);
     console.log("repo :" + repo);
     console.log("repo 作るよー");
-    createRepoApi(token, userName, repo);
-    console.log("リポジトリつくたったわwwwww");
+    createRepoApi(token, userName, repo)
+      .then(() => {
+        setStatusMessage("リポジトリ生成成功");
+      })
+      .catch((msg) => {
+        console.log(msg);
+        setStatusMessage(msg);
+      });
   };
   const addMets = () => {
     getDoc(doc(db, "users", user.uid, "mets", user.uid)).then((data) => {

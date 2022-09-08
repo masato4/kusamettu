@@ -29,13 +29,13 @@ export default async function growGrassToGithub(token, owner, repo, metsNum) {
         console.log("successful commit automation");
         repeatNum = 1;
         clearInterval(id);
+        return "successful create commit";
       }
     }, 15000);
-    console.log("success grow glass <- 嘘です");
     return `草生やしたったwww`;
   } catch (error) {
     console.error(error);
-    return `草生やすの失敗したったwww`;
+    return `failed to commit`;
   }
 }
 const gitCommitPush = async (config) => {

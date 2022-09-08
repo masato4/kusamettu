@@ -68,7 +68,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   const [value, setValue] = useState();
   const [opened, setOpened] = useState(false);
 
-  const [progress , setProgress] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   const options = selectOption;
 
@@ -124,6 +124,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   const [minutes, setMinutes] = useState();
   const [calorie, setCalorie] = useState();
   const [log, setLog] = useState();
+  const [statusMessage, setStatusMessage] = useState("");
 
   // カロリーを集計
   const calculateCalorie = () => {
@@ -175,13 +176,15 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   const handleGrowGrass = () => {
     console.log("called methods");
     console.log("メッツ量 :" + mets[0]);
-    createCommitApi(
-      userInfo.token,
-      userName,
-      userInfo.repo,
-      mets[0],
-
-    );
+    createCommitApi(userInfo.token, userName, userInfo.repo, mets[0])
+      .then((msg) => {
+        console.log(msg);
+        setStatusMessage(msg);
+      })
+      .catch((msg) => {
+        console.log(msg);
+        setStatusMessage(msg);
+      });
   };
 
   useEffect(() => {
@@ -206,10 +209,10 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   <Text>{user.displayName}</Text>
                 </Group>
                 <Group>
-             
+                  <Text>{statusMessage}</Text>
                   {/* プログレスバー */}
                   <Progress value={50} />
-                
+
                   <ActionIcon
                     onClick={() => {
                       setOpened(true);
@@ -248,6 +251,8 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             setOpened={setOpened}
             userInfo={userInfo}
             setUserInfo={setUserInfo}
+            statusMessage={statusMessage}
+            setStatusMessage={setStatusMessage}
           />
         </Modal>
 
