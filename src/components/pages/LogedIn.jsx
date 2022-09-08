@@ -107,12 +107,12 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       .then((data) => {
         data.exists()
           ? setUserInfo({
-              name: userName,
-              repo: data.data().repo,
-              token: data.data().token,
-              weight: data.data().weight,
-              calorie: data.data().calorie,
-            })
+            name: userName,
+            repo: data.data().repo,
+            token: data.data().token,
+            weight: data.data().weight,
+            calorie: data.data().calorie,
+          })
           : setOpened(true);
       })
       .catch((err) => {
@@ -254,8 +254,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   メッツを入力
                   {/* <AiOutlineInfoCircle></AiOutlineInfoCircle> */}
                 </span>
-
-
               <div className="mx-[calc(20%)]">
                 <Select
                   searchable
@@ -265,7 +263,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   className="min-w-fit w-full"
                 />
               </div>
-            </div>
+            {/* </div> */}
 
 
             <div className="grid grid-cols-2 grid-rows-1">
@@ -300,7 +298,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               </div>
 
             </div>
-          </div>
+          {/* </div> */}
           <Button
             onClick={() => {
               calculateCalorie();
@@ -311,10 +309,10 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             カロリーの計算
           </Button>
           <div className="grid grid-cols-1 grid-rows-1 place-content-center">
-                <Text className="items-center text-xl text-center">
-                  {calorie}kcal
-                </Text>
-              </div>
+            <Text className="items-center text-xl text-center">
+              {calorie}kcal
+            </Text>
+          </div>
 
           <Button
             // disabled={isAnimating1}
@@ -330,8 +328,9 @@ const LogedIn = ({ token, user, setToken, userName }) => {
           >
             送信
           </Button>
-        </div>
-        <Segmented log={log} values={value} /> </div>
+          </div>
+          <Segmented log={log} values={value} /> 
+          </div>
             
            
             <PandaYoko></PandaYoko>

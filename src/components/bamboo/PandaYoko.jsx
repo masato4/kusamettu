@@ -5,7 +5,7 @@ import { useState } from "react";
 
 
 export function PandaYoko() {
-    const [bamboo, setBamboo] = useState([])
+    const [bamboo, setBamboo] = useState(0)
     const [bambooX, setBambooX] = useState([])
     const keyframes = {
         ".arm.right": {
@@ -101,6 +101,11 @@ export function PandaYoko() {
         setBamboo([...Array(parseInt(e.target.value))])
     }
     const chengetext2 = (e) => {
+        if(e.target.value == "0"){
+            setBamboo(0)
+        }else{
+            setBamboo(1)
+        }
         console.log([...Array(e.target.value)])
         const x = Math.floor(parseInt(e.target.value) / 14)
         let aaa = []
@@ -115,8 +120,18 @@ export function PandaYoko() {
     return (
 
         <>
-                <div className="">
-<div>                <input type="number" placeholder="Type here" onChange={chengetext2} className="input input-bordered input-info w-full max-w-xs" />
+                <div className="relative">
+                    <div>                
+                        <input type="number" placeholder="Type here" onChange={chengetext2} className="absolute z-30 input input-bordered input-info w-full max-w-xs" />
+                        <div className="card absolute w-96 left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20 bg-base-100 shadow-xl">
+                            <div className="grid grid-cols-2 m-5 place-content-center">
+                                <span className="text-center z-30">現在:竹140本</span>
+                                <span className="text-center z-20">死まであと10時間</span>
+                                <span className="text-center z-30">このはちゃん</span>
+                                <span className="text-center z-20">20日生存中</span>
+                            </div>
+                        </div>
+                    {bamboo ? 
                     <Scene
                         keyframes={keyframes}
                         easing="ease-in-out"
@@ -145,11 +160,10 @@ export function PandaYoko() {
               })}
           </div> */}
                         <div class="container h-[calc(100vh-110px)] relative z-10">
-                            <div className="absolute bottom-150px left-202px">
+                            <div className="absolute bottom-[calc(13%)] left-[calc(50%)]">
                             {bambooX.map((x, i) => {
-                                return <BambooRender offset={i} x={x}></BambooRender>
+                                return <BambooRender offset={i%6} x={x} xoffset={Math.floor(i/6)}></BambooRender>
                             })}
-                            
                             
                             <div class="panda">
                                 <div class="body">
@@ -192,7 +206,13 @@ export function PandaYoko() {
                             </div>
                             </div>
                         </div>
-                    </Scene></div>
+                    </Scene>
+                    : 
+                    <div className="relative h-[calc(100vh-115px)]">
+                        <img src={"../../../public/deadpanda.png"} className="absolute left-[calc(50%)] bottom-[60px] w-[calc(50%)] translate-x-[calc(-50%)]" alt="" />
+                    </div>
+                    }
+                    </div>
                 </div>
                 </>
     );
