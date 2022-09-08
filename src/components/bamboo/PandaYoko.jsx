@@ -5,7 +5,7 @@ import { useState } from "react";
 
 
 export function PandaYoko({ diff, calorie }) {
-  const [bamboo, setBamboo] = useState([]);
+  const [bamboo, setBamboo] = useState(0);
   const [bambooX, setBambooX] = useState([]);
   const keyframes = {
     ".arm.right": {
@@ -101,6 +101,11 @@ export function PandaYoko({ diff, calorie }) {
     setBamboo([...Array(parseInt(e.target.value))]);
   };
   const chengetext2 = (e) => {
+    if(e.target.value == "0"){
+        setBamboo(0)
+    }else{
+        setBamboo(1)
+    }
     console.log([...Array(e.target.value)]);
     const x = Math.floor(parseInt(e.target.value) / 14);
     let aaa = [];
