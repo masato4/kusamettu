@@ -2,7 +2,7 @@ import { Autocomplete, Button, NumberInput, Stack, Text } from "@mantine/core";
 import { doc, setDoc, updateDoc, increment, getDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../../firebase";
-import restApis from "../../tools/githubRestApis";
+import createRepoApi from "../../tools/githubAPI/createRepository";
 
 const UserInfo = ({
   token,
@@ -47,7 +47,7 @@ const UserInfo = ({
     console.log("token :" + token);
     console.log("repo :" + repo);
     console.log("repo 作るよー");
-    restApis.creaetGithubRepository(token, userName, repo);
+    createRepoApi(token, userName, repo);
     console.log("リポジトリつくたったわwwwww");
   };
   const addMets = () => {

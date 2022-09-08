@@ -19,7 +19,7 @@ import ReactCanvasConfetti from "react-canvas-confetti";
 
 import { AiOutlineSetting, AiOutlineInfoCircle } from "react-icons/ai";
 
-import restApis from "../../tools/githubRestApis";
+import createCommitApi from "../../tools/githubAPI/createCommit";
 import {
   collection,
   doc,
@@ -36,6 +36,7 @@ import { GithubCalendar } from "../parts/GithubExerciseCalendar/GithubCalendar";
 import { Segmented } from "../parts/GithubSegmentedControl/SegmentedControl";
 
 import { selectOption } from "../../mets";
+import { PandaYoko } from "../bamboo/PandaYoko"
 
 const canvasStyles = {
   position: "fixed",
@@ -173,7 +174,12 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   const handleGrowGrass = () => {
     console.log("called methods");
     console.log("メッツ量 :" + mets[0]);
-    restApis.growGrassToGithub(userInfo.token, userName, userInfo.repo);
+    createCommitApi(
+      userInfo.token,
+      userName,
+      userInfo.repo,
+      mets[0]
+    );
   };
 
   useEffect(() => {
@@ -240,13 +246,15 @@ const LogedIn = ({ token, user, setToken, userName }) => {
         </Modal>
 
         {/* <Container className="mx-0 px-0"> */}
-        <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] mx-[calc(3%)]">
-          <div className="grid grid-cols-1 grid-rows-6 place-content-center gap-2">
-            <div className="grid grid-cols-1 grid-rows-2 place-content-center">
-              <span className="text-2xl text-center">
-                メッツを入力
-                {/* <AiOutlineInfoCircle></AiOutlineInfoCircle> */}
-              </span>
+
+          <div className="grid grid-cols-2 grid-rows-1 place-content-center h-[calc(100vh-110px)] mx-[calc(3%)]">
+            <div className="grid grid-cols-1 grid-rows-auto place-content-center gap-5">
+              <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit">
+                <span className="text-2xl text-center">
+                  メッツを入力
+                  {/* <AiOutlineInfoCircle></AiOutlineInfoCircle> */}
+                </span>
+
 
               <div className="mx-[calc(20%)]">
                 <Select
@@ -258,6 +266,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 />
               </div>
             </div>
+
 
             <div className="grid grid-cols-2 grid-rows-1">
               <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
@@ -277,6 +286,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               <div className="grid grid-cols-1 grid-rows-2 place-content-cente h-fit gap-2">
                 <span className="text-2xl text-center">時間を入力</span>
                 <div className="flex items-center mx-10 p-0">
+
                   <NumberInput
                     className="w-full"
                     value={minutes}
@@ -288,6 +298,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   <span className="text-xl px-2 py-0 my-0">分</span>
                 </div>
               </div>
+
             </div>
           </div>
           <Button
@@ -300,10 +311,10 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             カロリーの計算
           </Button>
           <div className="grid grid-cols-1 grid-rows-1 place-content-center">
-            <Text className="items-center text-xl text-center">
-              {calorie}kcal
-            </Text>
-          </div>
+                <Text className="items-center text-xl text-center">
+                  {calorie}kcal
+                </Text>
+              </div>
 
           <Button
             // disabled={isAnimating1}
@@ -320,11 +331,18 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             送信
           </Button>
         </div>
-        <Segmented log={log} values={value} userName={userName} />
+
+        <Segmented log={log} values={value} /> </div>
+            
+           
+            <PandaYoko></PandaYoko>
+          </div>
+
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-        {/* </Container> */}
+        
       </AppShell>
+      
     </>
   );
 };

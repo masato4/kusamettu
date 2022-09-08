@@ -31,6 +31,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-rewards": "^2.0.4",
+    "react-scenejs": "^1.1.0",
     "react-select": "^5.4.0",
     "react-tooltip": "^4.2.21",
     "recoil": "^0.7.5",
