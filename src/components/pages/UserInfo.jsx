@@ -60,11 +60,14 @@ const UserInfo = ({
   };
   return (
     <>
-      <Stack align="center">
+      <Stack>
         {/* <Autocomplete label="name" data={[]} value={name} onChange={setName} /> */}
-        <Text>{userName}</Text>
+        <Text>
+          <Text color="gray">ユーザー名</Text>
+          {userName}
+        </Text>
         <Autocomplete
-          label="repository"
+          label="作成するリポジトリ名"
           placeholder="repository"
           data={[]}
           value={repo}
