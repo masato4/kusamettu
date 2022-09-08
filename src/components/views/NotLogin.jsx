@@ -9,7 +9,7 @@ export const NotLogin = ({ login }) => {
         <LoginHeader />
         <div className="sm:text-9xl text-6xl text-white w-screen grid grid-cols-1 my-24 place-content-center ">
           <div className="text-center break-normal">
-            みんな草
+            みんな草、
             <br />
             はやしてる？
           </div>
