@@ -239,15 +239,16 @@ const LogedIn = ({ token, user, setToken, userName }) => {
           />
         </Modal>
 
-        <Container>
-          <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
-            <div>
-              <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
-                <div className="grid grid-cols-1 grid-rows-2 place-content-center">
-                  <span className="text-2xl text-center">
-                    メッツを入力
-                    {/* <AiOutlineInfoCircle></AiOutlineInfoCircle> */}
-                  </span>
+
+        {/* <Container className="mx-0 px-0"> */}
+          <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] mx-[calc(3%)]">
+            <div className="grid grid-cols-1 grid-rows-6 place-content-center gap-2">
+              <div className="grid grid-cols-1 grid-rows-2 place-content-center">
+                <span className="text-2xl text-center">
+                  メッツを入力
+                  {/* <AiOutlineInfoCircle></AiOutlineInfoCircle> */}
+                </span>
+
 
                   <div className="mx-[calc(20%)]">
                     <Select
@@ -260,9 +261,11 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   </div>
                 </div>
 
+
                 <div className="grid grid-cols-2 grid-rows-1">
                   <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
                     <span className="text-2xl text-center">体重を入力</span>
+
                     <NumberInput
                       className="w-full px-10"
                       value={userInfo.weight}
@@ -289,23 +292,27 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                     </div>
                   </div>
                 </div>
-                <Button
-                  onClick={() => {
-                    calculateCalorie();
-                  }}
-                  className="mx-[calc(30%)]"
-                  radius="md"
-                >
-                  カロリーの計算
-                </Button>
-                <div className="grid grid-cols-1 grid-rows-1 place-content-center">
-                  <Text className="items-center text-xl text-center">
-                    {calorie}kcal
-                  </Text>
-                </div>
+
+              </div>
+              <Button
+                onClick={() => {
+                  calculateCalorie();
+                }}
+                className="mx-[calc(30%)] mt-[calc(5%)]"
+                radius="md"
+              >
+                カロリーの計算
+              </Button>
+              <div className="grid grid-cols-1 grid-rows-1 place-content-center">
+                <Text className="items-center text-xl text-center">
+                  {calorie}kcal
+                </Text>
+              </div>
+
 
                 <Button
                   // disabled={isAnimating1}
+
 
                   onClick={() => {
                     startAnimation();
@@ -322,10 +329,14 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               </div>
               <Segmented log={log} values={value} />
             </div>
+
+          </div>
+          <div>
+            aaaaaa
           </div>
 
           <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-        </Container>
+        {/* </Container> */}
       </AppShell>
     </>
   );

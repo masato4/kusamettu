@@ -36,6 +36,7 @@ export const GithubCalendar = ({ log, values }) => {
         </Stack>
       </Modal>
       <div className="container">
+
         <h1 className="font-mono">運動コントリビューション</h1>
         <div>
           <CalendarHeatmap
@@ -68,6 +69,7 @@ export const GithubCalendar = ({ log, values }) => {
           />
         </div>
         <ReactTooltip />
+
       </div>
     </>
   );
