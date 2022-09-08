@@ -15,7 +15,7 @@ import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
 import { NumberInput } from "@mantine/core";
 import ReactCanvasConfetti from "react-canvas-confetti";
-import { AiOutlineSetting } from "react-icons/ai";
+import { AiOutlineSetting, AiOutlineInfoCircle } from "react-icons/ai";
 import restApis from "../../tools/githubRestApis";
 import {
   collection,
@@ -208,10 +208,13 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             setUserInfo={setUserInfo}
           />
         </Modal>
-        <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
+        <div className="grid grid-cols-1 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
           <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
             <div className="grid grid-cols-1 grid-rows-2 place-content-center">
-              <span className="text-2xl text-center">メッツを入力</span>
+              <span className="text-2xl text-center">
+                メッツを入力<AiOutlineInfoCircle></AiOutlineInfoCircle>
+              </span>
+
               <div className="mx-[calc(20%)]">
                 <Select
                   searchable
@@ -257,6 +260,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 calculateCalorie();
               }}
               className="mx-[calc(30%)]"
+              radius="md"
             >
               calculateCalorie
             </Button>

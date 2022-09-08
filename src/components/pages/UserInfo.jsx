@@ -1,4 +1,4 @@
-import { Autocomplete, Button, NumberInput, Stack } from "@mantine/core";
+import { Autocomplete, Button, NumberInput, Stack, Text } from "@mantine/core";
 import { doc, setDoc, updateDoc, increment, getDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../../firebase";
@@ -14,7 +14,7 @@ const UserInfo = ({
 }) => {
   const [repo, setRepo] = useState(userInfo?.repo || "");
   const [weight, setWeight] = useState(userInfo?.weight || "");
-  const [name, setName] = useState(userName);
+  // const [name, setName] = useState(userName);
   const [met, setMets] = useState();
   // const docref = doc(db, "users", user.uid);
   const increase = () => {};
@@ -61,7 +61,8 @@ const UserInfo = ({
   return (
     <>
       <Stack align="center">
-        <Autocomplete label="name" data={[]} value={name} onChange={setName} />
+        {/* <Autocomplete label="name" data={[]} value={name} onChange={setName} /> */}
+        <Text>{userName}</Text>
         <Autocomplete
           label="repository"
           placeholder="repository"
@@ -78,7 +79,7 @@ const UserInfo = ({
         />
         {/* <Autocomplete /> */}
         <Button
-          disabled={repo === "" || weight === "" || name === ""}
+          disabled={repo === "" || weight === ""}
           onClick={() => {
             addUserInfo();
             check();
