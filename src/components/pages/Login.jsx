@@ -26,7 +26,7 @@ export const Login = () => {
         const addInfo = getAdditionalUserInfo(result);
         setUserName(addInfo.username);
         setUser(result.user);
-        console.log(token, user);
+        console.log(userName);
         // ...
       })
       .catch((error) => {
