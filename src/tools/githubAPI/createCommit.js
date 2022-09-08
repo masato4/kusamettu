@@ -4,7 +4,7 @@ var repeatNum = 1;
 // コミットハッシュのキャッシュ
 var cacheSha = "";
 // githubに草を生やす関数
-export default async function growGrassToGithub(token, owner, repo, metsNum) {
+export default async function growGrassToGithub(token, owner, repo, metsNum, setPercent) {
   console.log("token :" + token);
   console.log("owner :" + owner);
   console.log("repo :" + repo);
@@ -12,6 +12,7 @@ export default async function growGrassToGithub(token, owner, repo, metsNum) {
   try {
     console.log("repeatNum :" + repeatNum);
     var id = setInterval(() => {
+      setPercent((repeatNum / metsNum) * 100);
       if (repeatNum < metsNum) {
         console.log("repeat :" + repeatNum);
         gitCommitPush({

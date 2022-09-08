@@ -74,6 +74,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
   const refAnimationInstance = useRef(null);
   const [intervalId, setIntervalId] = useState();
+  const [percent, setPercent] = useState(0);
 
   const getInstance = useCallback((instance) => {
     refAnimationInstance.current = instance;
@@ -174,16 +175,21 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   }, [opened]);
 
   const handleGrowGrass = () => {
+    setPercent(0);
     console.log("called methods");
     console.log("メッツ量 :" + mets[0]);
-    createCommitApi(userInfo.token, userName, userInfo.repo, mets[0])
+    createCommitApi(
+      userInfo.token,
+      userName,
+      userInfo.repo,
+      mets[0],
+      setPercent
+    )
       .then((msg) => {
         console.log(msg);
-        setStatusMessage(msg);
       })
       .catch((msg) => {
         console.log(msg);
-        setStatusMessage(msg);
       });
   };
 
@@ -211,7 +217,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 <Group>
                   <Text>{statusMessage}</Text>
                   {/* プログレスバー */}
-                  <Progress value={50} />
+                  <Progress value={percent} />
 
                   <ActionIcon
                     onClick={() => {
