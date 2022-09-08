@@ -331,11 +331,13 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             送信
           </Button>
         </div>
+
         <Segmented log={log} values={value} /> </div>
             
            
             <PandaYoko></PandaYoko>
           </div>
+
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
         
