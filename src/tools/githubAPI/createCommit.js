@@ -4,7 +4,17 @@ var repeatNum = 1;
 // コミットハッシュのキャッシュ
 var cacheSha = "";
 // githubに草を生やす関数
-export default async function growGrassToGithub(token, owner, repo, metsNum, setPercent) {
+export default async function growGrassToGithub(
+  token,
+  owner,
+  repo,
+  metsNum,
+  setPercent,
+  setStatusMessage,
+  setErrorDialogVisible,
+  setNotifyDialogVisible,
+  setDialogText
+) {
   console.log("token :" + token);
   console.log("owner :" + owner);
   console.log("repo :" + repo);
@@ -30,12 +40,16 @@ export default async function growGrassToGithub(token, owner, repo, metsNum, set
         console.log("successful commit automation");
         repeatNum = 1;
         clearInterval(id);
-        return "successful create commit";
+        setStatusMessage("草生やしたったわwwwww");
+        setNotifyDialogVisible(true)
+        setDialogText('コミットの作成に成功しました！');
       }
     }, 15000);
     return `草生やしたったwww`;
   } catch (error) {
     console.error(error);
+    setErrorDialogVisible(true)
+    setDialogText('コミットを生成するのに失敗しました。時間を開けて再度お試しください。')
     return `failed to commit`;
   }
 }

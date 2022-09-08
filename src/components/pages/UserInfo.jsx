@@ -13,6 +13,11 @@ const UserInfo = ({
   userName,
   statusMessage,
   setStatusMessage,
+  setCompVisible,
+  setTextVisible,
+  setNotifyDialogVisible,
+  setErrorDialogVisible,
+  setDialogText
 }) => {
   const [repo, setRepo] = useState(userInfo?.repo || "");
   const [weight, setWeight] = useState(userInfo?.weight || "");
@@ -37,6 +42,8 @@ const UserInfo = ({
   };
 
   const addUserInfo = () => {
+    setCompVisible(true)
+    setTextVisible(true)
     setStatusMessage("リポジトリ生成中");
     const docref = doc(db, "users", user.uid);
     setDoc(docref, {
@@ -52,11 +59,15 @@ const UserInfo = ({
     console.log("repo 作るよー");
     createRepoApi(token, userName, repo)
       .then(() => {
-        setStatusMessage("リポジトリ生成成功");
+        setStatusMessage("リポジトリつくたったわwwwwww");
+        setNotifyDialogVisible(true)
+        setDialogText('リポジトリの生成に成功しました。')
       })
       .catch((msg) => {
-        console.log(msg);
+        console.log('aiueo')
         setStatusMessage(msg);
+        setErrorDialogVisible(true)
+        setDialogText('リポジトリの生成に失敗しました。\n' + msg)
       });
   };
   const addMets = () => {

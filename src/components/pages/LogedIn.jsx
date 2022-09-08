@@ -36,6 +36,8 @@ import { GithubCalendar } from "../parts/GithubExerciseCalendar/GithubCalendar";
 import { Segmented } from "../parts/GithubSegmentedControl/SegmentedControl";
 import { selectOption } from "../../mets";
 import { Progress } from "../parts/ProgressBar/Progress";
+import { ErrorDialog } from "../parts/dialog/errorDialog";
+import { NotifyDialog } from "../parts/dialog/notifyDialog";
 
 const canvasStyles = {
   position: "fixed",
@@ -74,7 +76,18 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
   const refAnimationInstance = useRef(null);
   const [intervalId, setIntervalId] = useState();
+  // プログレスバー用state
   const [percent, setPercent] = useState(0);
+  const [statusMessage, setStatusMessage] = useState("");
+  // compVisibleはtext + progressの表示条件
+  const [compVisible, setCompVisible] = useState(false);
+  const [textVisible, setTextVisible] = useState(false);
+  const [progressVisible, setProgressVisible] = useState(false);
+
+  // error or notify dialog
+  const [isErrorDialogVisible, setErrorDialogVisible] = useState(false);
+  const [isNotifyDialogVisible, setNotifyDialogVisible] = useState(false);
+  const [dialogText, setDialogText] = useState('')
 
   const getInstance = useCallback((instance) => {
     refAnimationInstance.current = instance;
@@ -125,7 +138,6 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   const [minutes, setMinutes] = useState();
   const [calorie, setCalorie] = useState();
   const [log, setLog] = useState();
-  const [statusMessage, setStatusMessage] = useState("");
 
   // カロリーを集計
   const calculateCalorie = () => {
@@ -175,6 +187,11 @@ const LogedIn = ({ token, user, setToken, userName }) => {
   }, [opened]);
 
   const handleGrowGrass = () => {
+    // progressbar 表示
+    setCompVisible(true);
+    setTextVisible(true);
+    setProgressVisible(true);
+    setStatusMessage("コミット中...");
     setPercent(0);
     console.log("called methods");
     console.log("メッツ量 :" + mets[0]);
@@ -183,14 +200,16 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       userName,
       userInfo.repo,
       mets[0],
-      setPercent
-    )
-      .then((msg) => {
-        console.log(msg);
-      })
-      .catch((msg) => {
-        console.log(msg);
-      });
+      setPercent,
+      // NOTE 非同期処理のタイミングがうまくいかないのでset関数を直接渡してnavbarの表示を変える
+      setStatusMessage,
+      setErrorDialogVisible,
+      setNotifyDialogVisible,
+      setDialogText
+    ).catch((msg) => {
+      console.log(msg);
+      setStatusMessage(msg);
+    });
   };
 
   useEffect(() => {
@@ -215,9 +234,17 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   <Text>{user.displayName}</Text>
                 </Group>
                 <Group>
-                  <Text>{statusMessage}</Text>
                   {/* プログレスバー */}
-                  <Progress value={percent} />
+                  {compVisible ? (
+                    <Progress
+                      value={percent}
+                      statusMessage={statusMessage}
+                      textVisible={textVisible}
+                      progressVisible={progressVisible}
+                    />
+                  ) : (
+                    ""
+                  )}
 
                   <ActionIcon
                     onClick={() => {
@@ -259,6 +286,11 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             setUserInfo={setUserInfo}
             statusMessage={statusMessage}
             setStatusMessage={setStatusMessage}
+            setCompVisible={setCompVisible}
+            setTextVisible={setTextVisible}
+            setErrorDialogVisible={setErrorDialogVisible}
+            setNotifyDialogVisible={setNotifyDialogVisible}
+            setDialogText={setDialogText}
           />
         </Modal>
 
@@ -347,6 +379,24 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
         {/* </Container> */}
+        {/* dialog */}
+        {/* NOTE: エラーダイアログとノティファイダイアログは同時には表示しない*/}
+        {isErrorDialogVisible && !isNotifyDialogVisible ? (
+          <ErrorDialog
+            setErrorDialogVisible={setErrorDialogVisible}
+            text={dialogText}
+          />
+        ) : (
+          ""
+        )}
+        {isNotifyDialogVisible && !isErrorDialogVisible ? (
+          <NotifyDialog
+            setNotifyDialogVisible={setNotifyDialogVisible}
+            text={dialogText}
+          />
+        ) : (
+          ""
+        )}
       </AppShell>
     </>
   );
