@@ -1,4 +1,4 @@
-import { Divider, Modal, Stack, Text } from "@mantine/core";
+import { Divider, Modal, Stack, Table, Text } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { useState } from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
@@ -24,21 +24,30 @@ export const GithubCalendar = ({ log, values }) => {
       >
         <Text className="m-3">{logDate && logDate}</Text>
         <Divider />
-        <Stack className="m-1">
-          {modalValue &&
-            modalValue.map((e) => (
-              <>
-                <Text>
-                  {e.do}:{e.mets} {e.time}時間
-                </Text>
-              </>
-            ))}
-        </Stack>
+        <Table>
+          <thead>
+            <tr>
+              <th>運動</th>
+              <th>mets</th>
+              <th>時間</th>
+            </tr>
+          </thead>
+          <tbody>
+            {modalValue &&
+              modalValue.map((e) => (
+                <tr>
+                  <td>{e.do}</td>
+                  <td>{e.mets}</td>
+                  <td>{e.time}</td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
+        <Stack className="m-1"></Stack>
       </Modal>
       <div className="container">
-
         <h1 className="font-mono">運動コントリビューション</h1>
-        <div>
+        <>
           <CalendarHeatmap
             // ここでfirestoreからデートを取得して当てる
             startDate={new Date(startDate)}
@@ -67,9 +76,8 @@ export const GithubCalendar = ({ log, values }) => {
               value && setDate(value.date);
             }}
           />
-        </div>
+        </>
         <ReactTooltip />
-
       </div>
     </>
   );
