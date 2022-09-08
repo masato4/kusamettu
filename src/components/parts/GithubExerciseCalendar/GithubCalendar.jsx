@@ -11,23 +11,23 @@ export const GithubCalendar = () => {
       <div>
         <CalendarHeatmap
         // ここでfirestoreからデートを取得して当てる
-          startDate={new Date("2015-12-01")}
-          endDate={new Date("2016-12-01")}
+          startDate={new Date("2022-01-01")}
+          endDate={new Date("2023-01-01")}
 
           // countの数でスタイルの色を変えている
           values={[
-            { date: "2016-07-03", count: 1 },
-            { date: "2016-08-22", count: 2 },
-            { date: "2016-07-29", count: 4 },
-            { date: '2016-10-01', count: 1 },
-            { date: '2016-10-03', count: 2 },
-            { date: '2016-10-06', count: 3 },
-            { date: '2016-10-10', count: 4 },
-            { date: '2016-10-07', count: 1 },
-            { date: '2016-09-15', count: 3 },
-            { date: '2016-09-18', count: 3 },
-            { date: '2016-09-19', count: 3 },
-            { date: '2016-09-20', count: 6 },
+            { date: "2022-07-03", count: 1 },
+            { date: "2022-08-22", count: 2 },
+            { date: "2022-07-29", count: 4 },
+            { date: '2022-10-01', count: 1 },
+            { date: '2022-10-03', count: 2 },
+            { date: '2022-10-06', count: 3 },
+            { date: '2022-10-10', count: 4 },
+            { date: '2022-10-07', count: 1 },
+            { date: '2022-09-15', count: 3 },
+            { date: '2022-09-18', count: 3 },
+            { date: '2022-09-19', count: 3 },
+            { date: '2022-09-20', count: 6 },
             // ...and so on
           ]}
 
@@ -44,7 +44,7 @@ export const GithubCalendar = () => {
             }
             // react-tooltipの構成
             return {
-              "data-tip": `${value.date} has count: ${value.count}\nカロリー:2`,
+              "data-tip": `${value.date} has count: ${value.count}  カロリー:2`,
             };
           }}
         />
