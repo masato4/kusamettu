@@ -10,12 +10,13 @@ import {
   Text,
   ActionIcon,
   Avatar,
+  Container,
 } from "@mantine/core";
 import { auth, db } from "../../firebase";
 import UserInfo from "./UserInfo";
 import { NumberInput } from "@mantine/core";
 import ReactCanvasConfetti from "react-canvas-confetti";
-import { AiOutlineSetting } from "react-icons/ai";
+import { AiOutlineSetting, AiOutlineInfoCircle } from "react-icons/ai";
 import restApis from "../../tools/githubRestApis";
 import {
   collection,
@@ -204,6 +205,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
           onClose={() => {
             setOpened(false);
           }}
+          title="ユーザー情報を入力してください"
         >
           <UserInfo
             token={token}
@@ -214,78 +216,93 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             setUserInfo={setUserInfo}
           />
         </Modal>
-        <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
-          <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
-            <div className="grid grid-cols-1 grid-rows-2 place-content-center">
-              <span className="text-2xl text-center">メッツを入力</span>
-              <div className="mx-[calc(20%)]">
-                <Select
-                  searchable
-                  value={mets}
-                  data={options}
-                  onChange={setMets}
-                  className="min-w-fit w-full"
-                />
-              </div>
-            </div>
+        <Container>
+          <div className="grid grid-cols-1 grid-rows-2 place-content-center h-[calc(100vh-92px)] ">
+            <div className="grid grid-cols-1 grid-rows-3 place-content-center gap-2">
+              <div className="grid grid-cols-1 grid-rows-2 place-content-center">
+                <span className="text-2xl text-center">
+                  メッツを入力
+                  {/* <AiOutlineInfoCircle></AiOutlineInfoCircle> */}
+                </span>
 
-            <div className="grid grid-cols-2 grid-rows-1">
-              <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
-                <span className="text-2xl text-center">体重を入力</span>
-                <NumberInput
-                  className="w-full px-10"
-                  value={userInfo.weight}
-                  onChange={(val) => {
-                    setUserInfo({ weight: val });
-                  }}
-                  placeholder="体重を入力してください"
-                  // label="体重を入力してください"
-                  withAsterisk
-                />
-              </div>
-              <div className="grid grid-cols-1 grid-rows-2 place-content-cente h-fit gap-2">
-                <span className="text-2xl text-center">時間を入力</span>
-                <div className="flex items-center mx-10 p-0">
-                  <NumberInput
-                    className="w-full"
-                    value={minutes}
-                    withAsterisk
-                    onChange={(val) => {
-                      setMinutes(val);
-                    }}
+                <div className="mx-[calc(20%)]">
+                  <Select
+                    searchable
+                    value={mets}
+                    data={options}
+                    onChange={setMets}
+                    className="min-w-fit w-full"
                   />
-                  <span className="text-xl px-2 py-0 my-0">分</span>
                 </div>
               </div>
+
+              <div className="grid grid-cols-2 grid-rows-1">
+                <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
+                  <span className="text-2xl text-center">体重を入力</span>
+                  <NumberInput
+                    className="w-full px-10"
+                    value={userInfo.weight}
+                    onChange={(val) => {
+                      setUserInfo({ weight: val });
+                    }}
+                    placeholder="体重を入力してください"
+                    // label="体重を入力してください"
+                    withAsterisk
+                  />
+                </div>
+                <div className="grid grid-cols-1 grid-rows-2 place-content-cente h-fit gap-2">
+                  <span className="text-2xl text-center">時間を入力</span>
+                  <div className="flex items-center mx-10 p-0">
+                    <NumberInput
+                      className="w-full"
+                      value={minutes}
+                      withAsterisk
+                      onChange={(val) => {
+                        setMinutes(val);
+                      }}
+                    />
+                    <span className="text-xl px-2 py-0 my-0">分</span>
+                  </div>
+                </div>
+              </div>
+              <Button
+                onClick={() => {
+                  calculateCalorie();
+                }}
+                className="mx-[calc(30%)]"
+                radius="md"
+              >
+                カロリーの計算
+              </Button>
+              <div className="grid grid-cols-1 grid-rows-1 place-content-center">
+                <Text className="items-center text-xl text-center">
+                  {calorie}kcal
+                </Text>
+              </div>
+
+              <Button
+                // disabled={isAnimating1}
+
+                onClick={() => {
+                  startAnimation();
+                  setTimeout(pauseAnimation, 2000);
+                  addMets();
+                  handleGrowGrass();
+                }}
+                radius="md"
+                className="mx-[calc(30%)]"
+              >
+                送信
+              </Button>
             </div>
-            <Button
-              onClick={() => {
-                calculateCalorie();
-              }}
-              className="mx-[calc(30%)]"
-            >
-              calculateCalorie
-            </Button>
-            <Text className="mx-[calc(30%)]">{calorie}</Text>
-            <Button
-              // disabled={isAnimating1}
 
-              onClick={() => {
-                startAnimation();
-                setTimeout(pauseAnimation, 2000);
-                addMets();
-                handleGrowGrass();
-              }}
-              radius="md"
-              className="mx-[calc(30%)]"
-            >
-              送信
-            </Button>
+            {/* <div className="flex flex-col h-">wwwwwwwwwww</div> */}
+            <ReactCanvasConfetti
+              refConfetti={getInstance}
+              style={canvasStyles}
+            />
           </div>
-
-          <div className="flex flex-col h-">wwwwwwwwwww</div>
-          <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-        </div>
+        </Container>
       </AppShell>
     </>
   );
