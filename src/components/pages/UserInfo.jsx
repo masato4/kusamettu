@@ -47,7 +47,7 @@ const UserInfo = ({
     console.log("token :" + token);
     console.log("repo :" + repo);
     console.log("repo 作るよー");
-    restApis.creaetGithubRepository(token, userInfo.name, repo);
+    restApis.creaetGithubRepository(token, userName, repo);
     console.log("リポジトリつくたったわwwwww");
   };
   const addMets = () => {
