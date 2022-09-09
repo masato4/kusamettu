@@ -2,12 +2,13 @@ import "./styles.css";
 import { Scene, SceneItem } from "react-scenejs";
 import { BambooRender } from "./BambooRender";
 import { useEffect, useState } from "react";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 
 export function PandaYoko({ calorie, user }) {
-  const [bamboo, setBamboo] = useState(1);
+  const [bamboo, setBamboo] = useState(0);
   const [bambooX, setBambooX] = useState([]);
+  const [cal, setCal] = useState(calorie);
   const keyframes = {
     ".arm.right": {
       0: "transform: rotate(90deg)",
@@ -118,20 +119,23 @@ export function PandaYoko({ calorie, user }) {
     console.log(aaa);
   };
   useEffect(() => {
-    if (Math.floor(calorie / 5) == 0) {
+    getDoc(doc(db, "users", user.uid)).then((data) => {
+      data.exists() && setCal(data.data().calories);
+    });
+    if (Math.floor(cal / 5) == 0) {
       setBamboo(0);
-      updateDoc(doc(db, "users", user.uid), {
-        dead: new Date(),
-      });
+      // updateDoc(doc(db, "users", user.uid), {
+      //   dead: new Date(),
+      // });
     } else {
       setBamboo(1);
     }
-    const x = Math.floor(parseInt(Math.floor(calorie / 5)) / 14);
+    const x = Math.floor(parseInt(Math.floor(cal / 5)) / 14);
     let aaa = [];
     for (let i = 0; i < x; i++) {
       aaa.push(14);
     }
-    aaa.push(parseInt(Math.floor(calorie / 5)) % 14);
+    aaa.push(parseInt(Math.floor(cal / 5)) % 14);
     setBambooX(aaa);
     console.log(Math.floor(calorie / 5));
   }, [calorie]);
@@ -139,12 +143,12 @@ export function PandaYoko({ calorie, user }) {
     <>
       <div className="relative">
         <div>
-          <input
+          {/* <input
             type="number"
             placeholder="Type here"
             onChange={chengetext2}
             className="absolute z-30 input input-bordered input-info w-full max-w-xs"
-          />
+          /> */}
           <div className="card absolute w-96 left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20 bg-base-100 shadow-xl">
             <div className="grid grid-cols-2 m-5 place-content-center">
               <span className="text-center z-30">現在:竹{calorie / 5}本</span>

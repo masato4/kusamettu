@@ -11,7 +11,7 @@ import LogedIn from "./LogedIn";
 import { NotLogin } from "../views/NotLogin";
 import { tokenAtom } from "../../atoms/TokenAtom";
 import { useSetRecoilState } from "recoil";
-import { doc, updateDoc, decrement, increment } from "firebase/firestore";
+import { doc, updateDoc, increment } from "firebase/firestore";
 
 export const Login = () => {
   const [token, setToken] = useState("");
@@ -40,9 +40,8 @@ export const Login = () => {
         const difftime = today - last;
         setDiff(Math.floor(difftime / 1000 / 60 / 60) % 24);
         await updateDoc(doc(db, "users", user.uid), {
-          calories: increment(5),
+          calories: increment(-1 * diff * 5),
         });
-        console.log(diff);
       })
       .catch((error) => {
         // Handle Errors here.
