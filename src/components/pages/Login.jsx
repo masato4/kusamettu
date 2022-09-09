@@ -39,9 +39,9 @@ export const Login = () => {
         const last = new Date(Number(user.metadata.lastLoginAt));
         const difftime = today - last;
         setDiff(Math.floor(difftime / 1000 / 60 / 60) % 24);
-        await updateDoc(doc(db, "users", user.uid), {
-          calories: increment(-1 * diff * 5),
-        });
+        // await updateDoc(doc(db, "users", user.uid), {
+        //   calories: increment(-1 * diff * 5),
+        // });
       })
       .catch((error) => {
         // Handle Errors here.

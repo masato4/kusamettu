@@ -8,8 +8,8 @@ import { ActionIcon, Autocomplete, Button } from "@mantine/core";
 import { AiOutlineEdit } from "react-icons/ai";
 
 export function PandaYoko({ calorie, user }) {
-  const [bamboo, setBamboo] = useState(1);
-  const [bambooX, setBambooX] = useState([14, 0]);
+  const [bamboo, setBamboo] = useState(0);
+  const [bambooX, setBambooX] = useState([]);
   const [cal, setCal] = useState(calorie || 100);
   const [edit, setEdit] = useState(true);
   const [name, setName] = useState();
@@ -128,13 +128,13 @@ export function PandaYoko({ calorie, user }) {
     console.log(aaa);
   };
   useEffect(() => {
-    const get = async () =>
-      await getDoc(doc(db, "users", user.uid)).then((data) => {
-        data.exists() && setCal(data.data().calories);
-        data.exists() && setName(data.data().pandaName);
-      });
+    console.log(calorie);
+    getDoc(doc(db, "users", user.uid)).then((data) => {
+      data.exists() && setCal(data.data().calories);
+      data.exists() && setName(data.data().pandaName);
+      console.log(data.data().calories);
+    });
     setCal(calorie);
-    get();
     if (Math.floor(cal / 5) == 0) {
       setBamboo(0);
       // updateDoc(doc(db, "users", user.uid), {
@@ -151,11 +151,16 @@ export function PandaYoko({ calorie, user }) {
     aaa.push(parseInt(Math.floor(cal / 5)) % 14);
     setBambooX(aaa);
     console.log(Math.floor(calorie / 5));
+    // setCal(calorie);
   }, [calorie]);
 
   useEffect(() => {
-    console.log(bamboo);
-  }, [bamboo]);
+    getDoc(doc(db, "users", user.uid)).then((data) => {
+      data.exists() && setCal(data.data().calories);
+      data.exists() && setName(data.data().pandaName);
+      console.log(data.data());
+    });
+  }, []);
 
   return (
     <>
