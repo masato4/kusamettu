@@ -319,7 +319,7 @@ export function PandaYoko({ calorie, user }) {
           ) : (
             <div className="relative h-[calc(100vh-115px)]">
               <img
-                src={"../../../public/deadpanda.png"}
+                src={"/deadpanda.png"}
                 className="absolute left-[calc(50%)] bottom-[60px] w-[calc(50%)] translate-x-[calc(-50%)]"
                 alt=""
               />
