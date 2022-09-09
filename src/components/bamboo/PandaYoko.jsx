@@ -9,6 +9,7 @@ import { db } from "../../firebase";
 export function PandaYoko({ calorie,user }) {
     const [bamboo, setBamboo] = useState(0);
     const [bambooX, setBambooX] = useState([]);
+    const [cal,setCal]=useState()
     const keyframes = {
         ".arm.right": {
             0: "transform: rotate(90deg)",
