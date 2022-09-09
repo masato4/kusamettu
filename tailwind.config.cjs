@@ -3012,6 +3012,10 @@ module.exports = {
 '1500-px': '-1500px',
       }
     },
+    fontFamily: {
+      NikoNiko: ["Nico Moji"],
+      Hachi: ["Hachi Maru Pop"],
+    },
   },
   plugins: [require("daisyui")],
 };

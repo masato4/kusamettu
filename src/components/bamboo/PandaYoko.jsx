@@ -100,10 +100,11 @@ export function PandaYoko({ calorie }) {
     setBamboo([...Array(parseInt(e.target.value))]);
   };
   const chengetext2 = (e) => {
-    if (e.target.value == "0") {
-      setBamboo(0);
-    } else {
-      setBamboo(1);
+    if(parseInt(e.target.value) <= 0){
+        setBamboo(0)
+    }else{
+        setBamboo(1)
+
     }
     console.log([...Array(e.target.value)]);
     const x = Math.floor(parseInt(e.target.value) / 14);
@@ -130,108 +131,100 @@ export function PandaYoko({ calorie }) {
     setBambooX(aaa);
     console.log(aaa);
   }, []);
-  return (
-    <>
-      <div className="relative">
-        <div>
-          <input
-            type="number"
-            placeholder="Type here"
-            onChange={chengetext2}
-            className="absolute z-30 input input-bordered input-info w-full max-w-xs"
-          />
-          <div className="card absolute w-96 left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20 bg-base-100 shadow-xl">
-            <div className="grid grid-cols-2 m-5 place-content-center">
-              <span className="text-center z-30">現在:竹{calorie / 5}本</span>
-              <span className="text-center z-20">
-                死まであと{calorie / 5}時間
-              </span>
-              <span className="text-center z-30">このはちゃん</span>
-              <span className="text-center z-20">20日生存中</span>
-            </div>
-          </div>
-          {bamboo ? (
-            <Scene
-              keyframes={keyframes}
-              easing="ease-in-out"
-              fillMode="forwards"
-              direcition="normal"
-              iterationCount={"infinite"}
-              // iterationCount={1}
-              playSpeed={1}
-              delay={0}
-              time={0}
-              css={false}
-              autoplay={true}
-              ready={true}
-              duration={20}
-              onPlay={(e) => {
-                console.log(e);
-              }}
-              onPaused={(e) => {
-                console.log(e);
-              }}
-              onAnimate={(e) => {
-                console.log(e);
-              }}
-              onTimeUpdate={(e) => {
-                console.log(e);
-              }}
-              onIteration={(e) => {
-                console.log(e);
-              }}
-              onEnded={(e) => {
-                console.log(e);
-              }}
-              className="min-h-screen"
-            >
-              {/* <div className="container min-h-[calc(100vh)]">
+
+    return (
+
+        <>
+                <div className="relative">
+                    <div>
+                        <input type="number" placeholder="." onChange={chengetext2} className="absolute top-[600px]] z-30 input input-ghost w-full max-w-xs" />
+                        {/* <div className="card w-96 image-full glass absolute left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20"> */}
+                        <div className="card w-96 glass absolute left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20">
+                            <div className="card-body">
+                                <h2 className="card-title font-NikoNiko text-5xl">{bamboo ? "" : "故"} このはちゃん</h2>
+                                <div className="grid grid-cols-1 m-5 font-Hachi gap-2 place-content-center">
+                                    {bamboo ? <><span className=" z-30 text-xl">貯蓄：140本</span><span className=" z-20 text-xl">寿命：のこり10時間！</span><span className=" z-20 text-xl">期間：20日間生存中！</span></>
+                                    :
+                                    <span className=" z-20 text-xl">享年：20日</span>}
+                                </div>
+                            </div>
+                        </div>
+                    {bamboo ? 
+                    <Scene
+                        keyframes={keyframes}
+                        easing="ease-in-out"
+                        fillMode="forwards"
+                        direcition="normal"
+                        iterationCount={"infinite"}
+                        // iterationCount={1}
+                        playSpeed={1}
+                        delay={0}
+                        time={0}
+                        css={false}
+                        autoplay={true}
+                        ready={true}
+                        duration={20}
+                        onPlay={e => { console.log(e); }}
+                        onPaused={e => { console.log(e); }}
+                        onAnimate={e => { console.log(e); }}
+                        onTimeUpdate={e => { console.log(e); }}
+                        onIteration={e => { console.log(e); }}
+                        onEnded={e => { console.log(e); }}
+                        className="min-h-screen"
+                    >
+                        {/* <div className="container min-h-[calc(100vh)]">
+
 
               {bamboo.map((x, i) =>{
                 return <PandaYoko offset={i}></PandaYoko>
               })}
           </div> */}
-              <div class="container h-[calc(100vh-110px)] relative z-10">
-                <div className="absolute bottom-[calc(13%)] left-[calc(50%)]">
-                  {bambooX.map((x, i) => {
-                    return (
-                      <BambooRender
-                        offset={i % 6}
-                        x={x}
-                        xoffset={Math.floor(i / 6)}
-                      ></BambooRender>
-                    );
-                  })}
+                        <div class="container h-[calc(100vh-110px)] relative z-10">
+                            <div className="absolute bottom-[calc(12vh)] left-[calc(50%)]">
+                            {bambooX.map((x, i) => {
+                                return <BambooRender offset={i%6} x={x} xoffset={Math.floor(i/6)}></BambooRender>
+                            })}
+                            
+                            <div class="panda">
+                                <div class="body">
+                                    <div class="arm left">
+                                        <div class="forearm">
+                                            <div class="hand"></div>
+                                        </div>
+                                    </div>
+                                    <div class="leg left"><div class="foot"></div></div>
+                                    <div class="belly">
+                                    </div>
+                                    <div class="leg right"><div class="foot"></div></div>
+                                    <div class="head">
+                                        <div class="ear left"></div>
+                                        <div class="ear right"></div>
+                                        <div class="cheek right"></div>
+                                        <div class="face">
+                                            <div class="eye left"></div>
+                                            <div class="eye right"></div>
+                                        </div>
+                                    </div>
+                                    <div class="arm right">
+                                        <div class="forearm">
+                                            <div class="hand">
+                                                <div class="bamboo joint2">
+                                                    <div class="joint"></div>
+                                                    <div class="joint"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="head front">
+                                        <div class="mouth"></div>
+                                        <div class="nose">
+                                            <div class="mustache left"></div>
+                                            <div class="mustache right"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                  <div class="panda">
-                    <div class="body">
-                      <div class="arm left">
-                        <div class="forearm">
-                          <div class="hand"></div>
-                        </div>
-                      </div>
-                      <div class="leg left">
-                        <div class="foot"></div>
-                      </div>
-                      <div class="belly"></div>
-                      <div class="leg right">
-                        <div class="foot"></div>
-                      </div>
-                      <div class="head">
-                        <div class="ear left"></div>
-                        <div class="ear right"></div>
-                        <div class="cheek right"></div>
-                        <div class="face">
-                          <div class="eye left"></div>
-                          <div class="eye right"></div>
-                        </div>
-                      </div>
-                      <div class="arm right">
-                        <div class="forearm">
-                          <div class="hand">
-                            <div class="bamboo joint2">
-                              <div class="joint"></div>
-                              <div class="joint"></div>
                             </div>
                           </div>
                         </div>

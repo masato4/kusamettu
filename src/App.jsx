@@ -16,6 +16,8 @@ function App() {
   });
   return (
     <ApolloProvider client={client}>
+      <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet" />
       <div className="App">
         <Login />
         {/* <LogedIn /> */}
