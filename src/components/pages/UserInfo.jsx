@@ -45,6 +45,7 @@ const UserInfo = ({
   const addUserInfo = () => {
     setCompVisible(true);
     setTextVisible(true);
+    setProgressVisible(false)
     setStatusMessage("リポジトリ生成中");
     const docref = doc(db, "users", user.uid);
     setDoc(docref, {

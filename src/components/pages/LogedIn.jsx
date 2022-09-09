@@ -306,6 +306,7 @@ const LogedIn = ({ token, user, setToken, userName, diff }) => {
             setErrorDialogVisible={setErrorDialogVisible}
             setNotifyDialogVisible={setNotifyDialogVisible}
             setDialogText={setDialogText}
+            setProgressVisible={setProgressVisible}
           />
         </Modal>
 
