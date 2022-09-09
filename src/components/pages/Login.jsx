@@ -6,16 +6,18 @@ import {
   getAdditionalUserInfo,
 } from "firebase/auth";
 import { Button } from "@mantine/core";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import LogedIn from "./LogedIn";
 import { NotLogin } from "../views/NotLogin";
 import { tokenAtom } from "../../atoms/TokenAtom";
 import { useSetRecoilState } from "recoil";
+import { doc, updateDoc, increment } from "firebase/firestore";
 
 export const Login = () => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState();
   const [userName, setUserName] = useState("");
+  const [diff, setDiff] = useState("");
   const setGitToken = useSetRecoilState(tokenAtom);
   const login = () => {
     const provider = new GithubAuthProvider();
@@ -30,8 +32,16 @@ export const Login = () => {
         const addInfo = getAdditionalUserInfo(result);
         setUserName(addInfo.username);
         setUser(result.user);
-        console.log(userName);
         // ...
+      })
+      .then(async () => {
+        const today = new Date();
+        const last = new Date(Number(user.metadata.lastLoginAt));
+        const difftime = today - last;
+        setDiff(Math.floor(difftime / 1000 / 60 / 60) % 24);
+        await updateDoc(doc(db, "users", user.uid), {
+          calories: increment(-1 * diff * 5),
+        });
       })
       .catch((error) => {
         // Handle Errors here.
@@ -62,6 +72,7 @@ export const Login = () => {
             user={user}
             setToken={setToken}
             userName={userName}
+            diff={diff}
           />
         </>
       )}

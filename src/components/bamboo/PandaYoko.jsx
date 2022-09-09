@@ -2,8 +2,11 @@ import "./styles.css";
 import { Scene, SceneItem } from "react-scenejs";
 import { BambooRender } from "./BambooRender";
 import { useEffect, useState } from "react";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
-export function PandaYoko({ calorie }) {
+
+export function PandaYoko({ calorie,user }) {
     const [bamboo, setBamboo] = useState(0);
     const [bambooX, setBambooX] = useState([]);
     const keyframes = {
@@ -117,20 +120,26 @@ export function PandaYoko({ calorie }) {
         console.log(aaa);
     };
     useEffect(() => {
-        if (Math.floor(calorie / 5) == 0) {
-            setBamboo(0);
-        } else {
-            setBamboo(1);
-        }
-        const x = Math.floor(parseInt(Math.floor(calorie / 5)) / 14);
-        let aaa = [];
-        for (let i = 0; i < x; i++) {
-            aaa.push(14);
-        }
-        aaa.push(parseInt(Math.floor(calorie / 5)) % 14);
-        setBambooX(aaa);
-        console.log(aaa);
-    }, []);
+    getDoc(doc(db, "users", user.uid)).then((data) => {
+      data.exists() && setCal(data.data().calories);
+    });
+    if (Math.floor(cal / 5) == 0) {
+      setBamboo(0);
+      // updateDoc(doc(db, "users", user.uid), {
+      //   dead: new Date(),
+      // });
+    } else {
+      setBamboo(1);
+    }
+    const x = Math.floor(parseInt(Math.floor(cal / 5)) / 14);
+    let aaa = [];
+    for (let i = 0; i < x; i++) {
+      aaa.push(14);
+    }
+    aaa.push(parseInt(Math.floor(cal / 5)) % 14);
+    setBambooX(aaa);
+    console.log(Math.floor(calorie / 5));
+  }, [calorie]);
 
     return (
 
