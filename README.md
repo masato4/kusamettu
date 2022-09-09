@@ -29,7 +29,7 @@
 
 
 ## 公開URL
-[KUSAMETs](https://webintern-a.vercel.app/)
+[KUSAMETs](https://kusamettu-masato4.vercel.app/)
 
 ## React 開発環境起動方法(後で削除するか移動してください)
 
