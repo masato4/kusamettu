@@ -4,7 +4,7 @@ export const ErrorDialog = ({
 }) => {
   return (
     <>
-      <div className="alert alert-error w-48">
+      <div className="alert alert-error">
         <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
