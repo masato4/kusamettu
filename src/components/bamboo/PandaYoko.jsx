@@ -136,7 +136,7 @@ export function PandaYoko({ calorie, user }) {
     //   console.log(data.data().calories);
     // });
     // setCal(calorie);
-    if (Math.floor(cal / 5) == 0) {
+    if (Math.floor(cal) == 0) {
       setBamboo(0);
       // updateDoc(doc(db, "users", user.uid), {
       //   dead: new Date(),
