@@ -101,7 +101,7 @@ export function PandaYoko({ diff, calorie }) {
     setBamboo([...Array(parseInt(e.target.value))]);
   };
   const chengetext2 = (e) => {
-    if(e.target.value == "0"){
+    if(parseInt(e.target.value) <= 0){
         setBamboo(0)
     }else{
         setBamboo(1)
@@ -122,14 +122,17 @@ export function PandaYoko({ diff, calorie }) {
 
         <>
                 <div className="relative">
-                    <div>                
-                        <input type="number" placeholder="Type here" onChange={chengetext2} className="absolute z-30 input input-bordered input-info w-full max-w-xs" />
-                        <div className="card absolute w-96 left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20 bg-base-100 shadow-xl">
-                            <div className="grid grid-cols-2 m-5 place-content-center">
-                                <span className="text-center z-30">現在:竹140本</span>
-                                <span className="text-center z-20">死まであと10時間</span>
-                                <span className="text-center z-30">このはちゃん</span>
-                                <span className="text-center z-20">20日生存中</span>
+                    <div>
+                        <input type="number" placeholder="." onChange={chengetext2} className="absolute top-[600px]] z-30 input input-ghost w-full max-w-xs" />
+                        {/* <div className="card w-96 image-full glass absolute left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20"> */}
+                        <div className="card w-96 glass absolute left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20">
+                            <div className="card-body">
+                                <h2 className="card-title font-NikoNiko text-5xl">{bamboo ? "" : "故"} このはちゃん</h2>
+                                <div className="grid grid-cols-1 m-5 font-Hachi gap-2 place-content-center">
+                                    {bamboo ? <><span className=" z-30 text-xl">貯蓄：140本</span><span className=" z-20 text-xl">寿命：のこり10時間！</span><span className=" z-20 text-xl">期間：20日間生存中！</span></>
+                                    :
+                                    <span className=" z-20 text-xl">享年：20日</span>}
+                                </div>
                             </div>
                         </div>
                     {bamboo ? 
@@ -162,7 +165,7 @@ export function PandaYoko({ diff, calorie }) {
               })}
           </div> */}
                         <div class="container h-[calc(100vh-110px)] relative z-10">
-                            <div className="absolute bottom-[calc(13%)] left-[calc(50%)]">
+                            <div className="absolute bottom-[calc(12vh)] left-[calc(50%)]">
                             {bambooX.map((x, i) => {
                                 return <BambooRender offset={i%6} x={x} xoffset={Math.floor(i/6)}></BambooRender>
                             })}

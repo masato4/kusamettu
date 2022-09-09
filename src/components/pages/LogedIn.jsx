@@ -242,7 +242,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
 
         {/* <Container className="mx-0 px-0"> */}
 
-        <div className="grid grid-cols-2 grid-rows-1 place-content-center h-[calc(100vh-110px)] mx-[calc(3%)]">
+        <div className="grid grid-cols-1 sm:grid-cols-2  grid-rows-1 place-content-center h-[calc(100vh-110px)] mx-[calc(3%)]">
           <div className="grid grid-cols-1 grid-rows-auto place-content-center gap-5">
             <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit">
               <span className="text-2xl text-center">
@@ -318,7 +318,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 radius="md"
                 className="mx-[calc(30%)]"
               >
-                送信
+                送信して竹をGET！
               </Button>
             </div>
             <Segmented userName={userName} log={log} values={value} />
