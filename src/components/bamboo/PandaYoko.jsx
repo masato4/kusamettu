@@ -10,9 +10,9 @@ import { AiOutlineEdit } from "react-icons/ai";
 export function PandaYoko({ calorie, user }) {
   const [bamboo, setBamboo] = useState(0);
   const [bambooX, setBambooX] = useState([]);
-  const [cal, setCal] = useState(calorie || 100);
+  const [cal, setCal] = useState(100);
   const [edit, setEdit] = useState(true);
-  const [name, setName] = useState();
+  const [name, setName] = useState("このはちゃん");
   const keyframes = {
     ".arm.right": {
       0: "transform: rotate(90deg)",
@@ -112,6 +112,7 @@ export function PandaYoko({ calorie, user }) {
     setBamboo([...Array(parseInt(e.target.value))]);
   };
   const chengetext2 = (e) => {
+    setCal(e.target.value)
     if (parseInt(e.target.value) <= 0) {
       setBamboo(0);
     } else {
@@ -128,13 +129,13 @@ export function PandaYoko({ calorie, user }) {
     console.log(aaa);
   };
   useEffect(() => {
-    console.log(calorie);
-    getDoc(doc(db, "users", user.uid)).then((data) => {
-      data.exists() && setCal(data.data().calories);
-      data.exists() && setName(data.data().pandaName);
-      console.log(data.data().calories);
-    });
-    setCal(calorie);
+    // console.log(calorie);
+    // getDoc(doc(db, "users", user.uid)).then((data) => {
+    //   data.exists() && setCal(data.data().calories);
+    //   data.exists() && setName(data.data().pandaName);
+    //   console.log(data.data().calories);
+    // });
+    // setCal(calorie);
     if (Math.floor(cal / 5) == 0) {
       setBamboo(0);
       // updateDoc(doc(db, "users", user.uid), {
@@ -155,11 +156,11 @@ export function PandaYoko({ calorie, user }) {
   }, [calorie]);
 
   useEffect(() => {
-    getDoc(doc(db, "users", user.uid)).then((data) => {
-      data.exists() && setCal(data.data().calories);
-      data.exists() && setName(data.data().pandaName);
-      console.log(data.data());
-    });
+    // getDoc(doc(db, "users", user.uid)).then((data) => {
+    //   data.exists() && setCal(data.data().calories);
+    //   data.exists() && setName(data.data().pandaName);
+    //   console.log(data.data());
+    // });
   }, []);
 
   return (
@@ -170,6 +171,7 @@ export function PandaYoko({ calorie, user }) {
             type="number"
             placeholder="."
             onChange={chengetext2}
+            defaultValue={cal}
             className="absolute top-[600px]] z-30 input input-ghost w-full max-w-xs"
           />
           {/* <div className="card w-96 image-full glass absolute left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20"> */}
@@ -209,10 +211,10 @@ export function PandaYoko({ calorie, user }) {
                 {bamboo ? (
                   <>
                     <span className=" z-30 text-xl">
-                      貯蓄：{Math.floor(cal / 5)}本
+                      貯蓄：{Math.floor(cal)}本
                     </span>
                     <span className=" z-20 text-xl">
-                      寿命：のこり{Math.floor(cal / 5)}時間！
+                      寿命：のこり{Math.floor(cal)}時間！
                     </span>
                     <span className=" z-20 text-xl">期間：20日間生存中！</span>
                   </>
