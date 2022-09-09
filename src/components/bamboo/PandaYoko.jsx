@@ -1,12 +1,15 @@
-import "./styles.css"
+import "./styles.css";
 import { Scene, SceneItem } from "react-scenejs";
-import { BambooRender } from "./BambooRender"
-import { useState } from "react";
+import { BambooRender } from "./BambooRender";
+import { useEffect, useState } from "react";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 
-export function PandaYoko() {
-    const [bamboo, setBamboo] = useState([])
-    const [bambooX, setBambooX] = useState([])
+export function PandaYoko({ calorie,user }) {
+    const [bamboo, setBamboo] = useState(0);
+    const [bambooX, setBambooX] = useState([]);
+    const [cal,setCal]=useState()
     const keyframes = {
         ".arm.right": {
             0: "transform: rotate(90deg)",
@@ -95,105 +98,152 @@ export function PandaYoko() {
             7.5: "height: 40px",
             8: "height: 0px",
         },
-    }
+    };
     const chengetext = (e) => {
-        console.log([...Array(e.target.value)])
-        setBamboo([...Array(parseInt(e.target.value))])
-    }
+        console.log([...Array(e.target.value)]);
+        setBamboo([...Array(parseInt(e.target.value))]);
+    };
     const chengetext2 = (e) => {
-        console.log([...Array(e.target.value)])
-        const x = Math.floor(parseInt(e.target.value) / 14)
-        let aaa = []
-        for (let i = 0; i < x; i++) {
-            aaa.push(14)
+        if (parseInt(e.target.value) <= 0) {
+            setBamboo(0)
+        } else {
+            setBamboo(1)
+
         }
-        aaa.push(parseInt(e.target.value) % 14)
-        setBambooX(aaa)
-        console.log(aaa)
+        console.log([...Array(e.target.value)]);
+        const x = Math.floor(parseInt(e.target.value) / 14);
+        let aaa = [];
+        for (let i = 0; i < x; i++) {
+            aaa.push(14);
+        }
+        aaa.push(parseInt(e.target.value) % 14);
+        setBambooX(aaa);
+        console.log(aaa);
+    };
+    useEffect(() => {
+    getDoc(doc(db, "users", user.uid)).then((data) => {
+      data.exists() && setCal(data.data().calories);
+    });
+    if (Math.floor(cal / 5) == 0) {
+      setBamboo(0);
+      // updateDoc(doc(db, "users", user.uid), {
+      //   dead: new Date(),
+      // });
+    } else {
+      setBamboo(1);
     }
+    const x = Math.floor(parseInt(Math.floor(cal / 5)) / 14);
+    let aaa = [];
+    for (let i = 0; i < x; i++) {
+      aaa.push(14);
+    }
+    aaa.push(parseInt(Math.floor(cal / 5)) % 14);
+    setBambooX(aaa);
+    console.log(Math.floor(calorie / 5));
+  }, [calorie]);
 
     return (
 
         <>
-                <div className="">
-<div>                <input type="number" placeholder="Type here" onChange={chengetext2} className="input input-bordered input-info w-full max-w-xs" />
-                    <Scene
-                        keyframes={keyframes}
-                        easing="ease-in-out"
-                        fillMode="forwards"
-                        direcition="normal"
-                        iterationCount={"infinite"}
-                        // iterationCount={1}
-                        playSpeed={1}
-                        delay={0}
-                        time={0}
-                        css={false}
-                        autoplay={true}
-                        ready={true}
-                        duration={20}
-                        onPlay={e => { console.log(e); }}
-                        onPaused={e => { console.log(e); }}
-                        onAnimate={e => { console.log(e); }}
-                        onTimeUpdate={e => { console.log(e); }}
-                        onIteration={e => { console.log(e); }}
-                        onEnded={e => { console.log(e); }}
-                        className="min-h-screen"
-                    >
-                        {/* <div className="container min-h-[calc(100vh)]">
-              {bamboo.map((x, i) =>{
-                return <PandaYoko offset={i}></PandaYoko>
-              })}
-          </div> */}
-                        <div class="container h-[calc(100vh-110px)] relative z-10">
-                            <div className="absolute bottom-150px left-202px">
-                            {bambooX.map((x, i) => {
-                                return <BambooRender offset={i} x={x}></BambooRender>
-                            })}
-                            
-                            
-                            <div class="panda">
-                                <div class="body">
-                                    <div class="arm left">
-                                        <div class="forearm">
-                                            <div class="hand"></div>
-                                        </div>
-                                    </div>
-                                    <div class="leg left"><div class="foot"></div></div>
-                                    <div class="belly">
-                                    </div>
-                                    <div class="leg right"><div class="foot"></div></div>
-                                    <div class="head">
-                                        <div class="ear left"></div>
-                                        <div class="ear right"></div>
-                                        <div class="cheek right"></div>
-                                        <div class="face">
-                                            <div class="eye left"></div>
-                                            <div class="eye right"></div>
-                                        </div>
-                                    </div>
-                                    <div class="arm right">
-                                        <div class="forearm">
-                                            <div class="hand">
-                                                <div class="bamboo joint2">
-                                                    <div class="joint"></div>
-                                                    <div class="joint"></div>
+            <div className="relative">
+                <div>
+                    <input type="number" placeholder="." onChange={chengetext2} className="absolute top-[600px]] z-30 input input-ghost w-full max-w-xs" />
+                    {/* <div className="card w-96 image-full glass absolute left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20"> */}
+                    <div className="card w-96 glass absolute left-[calc(50%)] translate-x-[calc(-50%)] top-[calc(15%)] z-20">
+                        <div className="card-body">
+                            <h2 className="card-title font-NikoNiko text-5xl">{bamboo ? "" : "故"} このはちゃん</h2>
+                            <div className="grid grid-cols-1 m-5 font-Hachi gap-2 place-content-center">
+                                {bamboo ? <><span className=" z-30 text-xl">貯蓄：140本</span><span className=" z-20 text-xl">寿命：のこり10時間！</span><span className=" z-20 text-xl">期間：20日間生存中！</span></>
+                                    :
+                                    <span className=" z-20 text-xl">享年：20日</span>}
+                            </div>
+                        </div>
+                    </div>
+                    {bamboo ?
+                        <Scene
+                            keyframes={keyframes}
+                            easing="ease-in-out"
+                            fillMode="forwards"
+                            direcition="normal"
+                            iterationCount={"infinite"}
+                            // iterationCount={1}
+                            playSpeed={1}
+                            delay={0}
+                            time={0}
+                            css={false}
+                            autoplay={true}
+                            ready={true}
+                            duration={20}
+                            onPlay={e => { console.log(e); }}
+                            onPaused={e => { console.log(e); }}
+                            onAnimate={e => { console.log(e); }}
+                            onTimeUpdate={e => { console.log(e); }}
+                            onIteration={e => { console.log(e); }}
+                            onEnded={e => { console.log(e); }}
+                            className="min-h-screen"
+                        >
+                            <div class="container h-[calc(100vh-110px)] relative z-10">
+                                <div className="absolute bottom-[calc(12vh)] left-[calc(50%)]">
+                                    {bambooX.map((x, i) => {
+                                        return <BambooRender offset={i % 6} x={x} xoffset={Math.floor(i / 6)}></BambooRender>
+                                    })}
+
+                                    <div class="panda">
+                                        <div class="body">
+                                            <div class="arm left">
+                                                <div class="forearm">
+                                                    <div class="hand"></div>
+                                                </div>
+                                            </div>
+                                            <div class="leg left"><div class="foot"></div></div>
+                                            <div class="belly">
+                                            </div>
+                                            <div class="leg right"><div class="foot"></div></div>
+                                            <div class="head">
+                                                <div class="ear left"></div>
+                                                <div class="ear right"></div>
+                                                <div class="cheek right"></div>
+                                                <div class="face">
+                                                    <div class="eye left"></div>
+                                                    <div class="eye right"></div>
+                                                </div>
+                                            </div>
+                                            <div class="arm right">
+                                                <div class="forearm">
+                                                    <div class="hand">
+                                                        <div class="bamboo joint2">
+                                                            <div class="joint"></div>
+                                                            <div class="joint"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="head front">
+                                                <div class="mouth"></div>
+                                                <div class="nose">
+                                                    <div class="mustache left"></div>
+                                                    <div class="mustache right"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="head front">
-                                        <div class="mouth"></div>
-                                        <div class="nose">
-                                            <div class="mustache left"></div>
-                                            <div class="mustache right"></div>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
-                            </div>
-                        </div>
-                    </Scene></div>
-                </div>
-                </>
-    );
+                
+              
+                        </Scene >
+         : (
+        <div className="relative h-[calc(100vh-115px)]">
+            <img
+                src={"../../../public/deadpanda.png"}
+                className="absolute left-[calc(50%)] bottom-[60px] w-[calc(50%)] translate-x-[calc(-50%)]"
+                alt=""
+            />
+        </div>
+    )}
+        </div >
+      </div >
+    </>
+  );
 }

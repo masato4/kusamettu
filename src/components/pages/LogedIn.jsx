@@ -38,6 +38,7 @@ import { selectOption } from "../../mets";
 import { Progress } from "../parts/ProgressBar/Progress";
 import { ErrorDialog } from "../parts/dialog/errorDialog";
 import { NotifyDialog } from "../parts/dialog/notifyDialog";
+import { PandaYoko } from "../bamboo/PandaYoko";
 
 const canvasStyles = {
   position: "fixed",
@@ -58,13 +59,13 @@ function getAnimationSettings(angle, originX) {
   };
 }
 
-const LogedIn = ({ token, user, setToken, userName }) => {
+const LogedIn = ({ token, user, setToken, userName, diff }) => {
   const [userInfo, setUserInfo] = useSetState({
     name: "",
     repo: "",
     token: "",
     weight: 0,
-    calorie: 0,
+    calories: 0,
   });
   // const [mets, setMets] = useState();
   const [value, setValue] = useState();
@@ -126,7 +127,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
               repo: data.data().repo,
               token: data.data().token,
               weight: data.data().weight,
-              calorie: data.data().calorie,
+              calories: data.data().calories,
             })
           : setOpened(true);
       })
@@ -145,14 +146,27 @@ const LogedIn = ({ token, user, setToken, userName }) => {
     setCalorie(calcu);
   };
 
-  const addMets = () => {
+  const addMets = async () => {
     const docRef = collection(db, "users", user.uid, "mets");
-    setDoc(doc(docRef), {
+    await setDoc(doc(docRef), {
       do: mets[1],
       mets: mets[0],
       time: Math.round((minutes / 60) * 10) / 10,
       timestamp: serverTimestamp(),
       calorie: calorie,
+    });
+    await updateDoc(doc(db, "users", user.uid), {
+      calories: increment(calorie),
+    });
+    await getDoc(doc(db, "users", user.uid)).then((data) => {
+      data.exists() &&
+        setUserInfo({
+          name: userName,
+          repo: data.data().repo,
+          token: data.data().token,
+          weight: data.data().weight,
+          calories: data.data().calories,
+        });
     });
   };
   // metsをfirestoreから取得して、日付ごとに集計
@@ -260,6 +274,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                         setToken("");
                       });
                     }}
+                    color="green"
                   >
                     Logout
                   </Button>
@@ -295,14 +310,14 @@ const LogedIn = ({ token, user, setToken, userName }) => {
         </Modal>
 
         {/* <Container className="mx-0 px-0"> */}
-        <div className="grid grid-cols-2 grid-rows-2 place-content-center h-[calc(100vh-92px)] mx-[calc(3%)]">
-          <div className="grid grid-cols-1 grid-rows-6 place-content-center gap-2">
-            <div className="grid grid-cols-1 grid-rows-2 place-content-center">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2  grid-rows-1 place-content-center h-[calc(100vh-110px)] mx-[calc(3%)]">
+          <div className="grid grid-cols-1 grid-rows-auto place-content-center gap-5">
+            <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit">
               <span className="text-2xl text-center">
                 メッツを入力
                 {/* <AiOutlineInfoCircle></AiOutlineInfoCircle> */}
               </span>
-
               <div className="mx-[calc(20%)]">
                 <Select
                   searchable
@@ -312,73 +327,83 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   className="min-w-fit w-full"
                 />
               </div>
-            </div>
+              {/* </div> */}
 
-            <div className="grid grid-cols-2 grid-rows-1">
-              <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
-                <span className="text-2xl text-center">体重を入力</span>
 
-                <NumberInput
-                  className="w-full px-10"
-                  value={userInfo.weight}
-                  onChange={(val) => {
-                    setUserInfo({ weight: val });
-                  }}
-                  placeholder="体重を入力してください"
-                  // label="体重を入力してください"
-                  withAsterisk
-                />
-              </div>
-              <div className="grid grid-cols-1 grid-rows-2 place-content-cente h-fit gap-2">
-                <span className="text-2xl text-center">時間を入力</span>
-                <div className="flex items-center mx-10 p-0">
+
+              <div className="grid grid-cols-2 grid-rows-1">
+                <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
+                  <span className="text-2xl text-center">体重を入力</span>
+
                   <NumberInput
-                    className="w-full"
-                    value={minutes}
-                    withAsterisk
+                    className="w-full px-10"
+                    value={userInfo.weight}
                     onChange={(val) => {
-                      setMinutes(val);
+                      setUserInfo({ weight: val });
                     }}
+                    placeholder="体重を入力してください"
+                    // label="体重を入力してください"
+                    withAsterisk
                   />
-                  <span className="text-xl px-2 py-0 my-0">分</span>
+                </div>
+                <div className="grid grid-cols-1 grid-rows-2 place-content-cente h-fit gap-2">
+                  <span className="text-2xl text-center">時間を入力</span>
+                  <div className="flex items-center mx-10 p-0">
+                    <NumberInput
+                      className="w-full"
+                      value={minutes}
+                      withAsterisk
+                      onChange={(val) => {
+                        setMinutes(val);
+                      }}
+                    />
+                    <span className="text-xl px-2 py-0 my-0">分</span>
+                  </div>
                 </div>
               </div>
+
+  
+              {/* </div> */}
+              <Button
+                onClick={() => {
+                  calculateCalorie();
+                }}
+                className="mx-[calc(30%)] mt-[calc(5%)]"
+                radius="md"
+                color="green"
+              >
+                カロリーの計算
+              </Button>
+              <div className="grid grid-cols-1 grid-rows-1 place-content-center">
+                <Text className="items-center text-xl text-center">
+                  {calorie}kcal
+                </Text>
+              </div>
+
+              <Button
+                // disabled={isAnimating1}
+                onClick={() => {
+                  startAnimation();
+                  setTimeout(pauseAnimation, 2000);
+                  addMets();
+                  handleGrowGrass();
+                  getMets();
+                }}
+                radius="md"
+                className="mx-[calc(30%)]"
+                color="green"
+              >
+                送信して竹をGET！
+              </Button>
             </div>
-          </div>
-          <Button
-            onClick={() => {
-              calculateCalorie();
-            }}
-            className="mx-[calc(30%)] mt-[calc(5%)]"
-            radius="md"
-          >
-            カロリーの計算
-          </Button>
-          <div className="grid grid-cols-1 grid-rows-1 place-content-center">
-            <Text className="items-center text-xl text-center">
-              {calorie}kcal
-            </Text>
+            <Segmented userName={userName} log={log} values={value} />
           </div>
 
-          <Button
-            // disabled={isAnimating1}
-            onClick={() => {
-              startAnimation();
-              setTimeout(pauseAnimation, 2000);
-              addMets();
-              handleGrowGrass();
-              getMets();
-            }}
-            radius="md"
-            className="mx-[calc(30%)]"
-          >
-            送信
-          </Button>
+          <PandaYoko user={user} calorie={userInfo.calories}></PandaYoko>
         </div>
-        <Segmented log={log} values={value} />
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
-        {/* </Container> */}
+         {/* </Container> */}
         {/* dialog */}
         {/* NOTE: エラーダイアログとノティファイダイアログは同時には表示しない*/}
         {isErrorDialogVisible && !isNotifyDialogVisible ? (
@@ -397,6 +422,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
         ) : (
           ""
         )}
+
       </AppShell>
     </>
   );

@@ -16,31 +16,37 @@ import { Sasa14 } from "./Sasa14"
 
 
 export const BambooRender = (props) => {
+
+    const ennzann = props.xoffset%2 ? "-" : ""
+    const leftorright = props.xoffset%2 ? "left-" : "left-"
+    const marginX = props.xoffset * 30
+    const render = leftorright + marginX + ennzann + "px"
+    console.log(render)
     return (
         <>
-            <div class={`bamboo joint2 bamboo1 mb-${props.offset * 100}px`}>
+            <div class={`bamboo joint2 bamboo1 mb-${props.offset * 100}px ${render}`}>
                 {props.x >= 1 && <Sasa1></Sasa1>}
             </div>
             {/* 下が右の明るグループ */}
-            <div class={`bamboo-group bamboo-group1 mb-${props.offset * 100}px`}>
+            <div class={`bamboo-group bamboo-group1 mb-${props.offset * 100}px ${render}`}>
                 {props.x >= 5 && <Sasa5></Sasa5>}
                 {props.x >= 6 && <Sasa6></Sasa6>}
                 {props.x >= 7 && <Sasa7></Sasa7>}
             </div>
             {/* 下がパンダが掴まない左のグループ */}
-            <div class={`bamboo-group bamboo-group2 mb-${props.offset * 100}px`}>
+            <div class={`bamboo-group bamboo-group2 mb-${props.offset * 100}px ${render}`}>
                 {props.x >= 2 && <Sasa2></Sasa2>}
                 {props.x >= 3 && <Sasa3></Sasa3>}
                 {props.x >= 4 && <Sasa4></Sasa4>}
             </div>
             {/* 下が右下の暗いグループ */}
-            <div class={`bamboo-group bamboo-group3 dark mb-${props.offset * 100}px`}>
+            <div class={`bamboo-group bamboo-group3 dark mb-${props.offset * 100}px ${render}`}>
                 {props.x >= 12 && <Sasa12></Sasa12>}
                 {props.x >= 13 && <Sasa13></Sasa13>}
                 {props.x >= 14 && <Sasa14></Sasa14>}
             </div>
             {/* 下が左下の暗いグループ */}
-            <div class={`bamboo-group bamboo-group4 dark mb-${props.offset * 100}px`}>
+            <div class={`bamboo-group bamboo-group4 dark mb-${props.offset * 100}px ${render}`}>
                 {props.x >= 8 && <Sasa8></Sasa8>}
                 {props.x >= 9 && <Sasa9></Sasa9>}
                 {props.x >= 10 && <Sasa10></Sasa10>}
