@@ -1,11 +1,13 @@
-import { Octokit } from '@octokit/rest'
+import { Octokit } from "@octokit/rest";
 
 export default async function creaetGithubRepository(token, ownerName, repo) {
   try {
     await gitCreateRepository(token, ownerName, repo);
     console.log("successed creaet repository");
+    return "success create repository";
   } catch (error) {
     console.log(error);
+    return "stop with error";
   }
 }
 

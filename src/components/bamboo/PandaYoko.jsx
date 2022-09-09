@@ -128,6 +128,7 @@ export function PandaYoko({ calorie, user }) {
     console.log(aaa);
   };
   useEffect(() => {
+
     getDoc(doc(db, "users", user.uid)).then((data) => {
       data.exists() && setCal(data.data().calories);
     });

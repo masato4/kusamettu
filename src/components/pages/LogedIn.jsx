@@ -34,8 +34,10 @@ import {
 import { useSetState } from "@mantine/hooks";
 import { GithubCalendar } from "../parts/GithubExerciseCalendar/GithubCalendar";
 import { Segmented } from "../parts/GithubSegmentedControl/SegmentedControl";
-
 import { selectOption } from "../../mets";
+import { Progress } from "../parts/ProgressBar/Progress";
+import { ErrorDialog } from "../parts/dialog/errorDialog";
+import { NotifyDialog } from "../parts/dialog/notifyDialog";
 import { PandaYoko } from "../bamboo/PandaYoko";
 
 const canvasStyles = {
@@ -69,10 +71,24 @@ const LogedIn = ({ token, user, setToken, userName, diff }) => {
   const [value, setValue] = useState();
   const [opened, setOpened] = useState(false);
 
+  const [progress, setProgress] = useState(0);
+
   const options = selectOption;
 
   const refAnimationInstance = useRef(null);
   const [intervalId, setIntervalId] = useState();
+  // プログレスバー用state
+  const [percent, setPercent] = useState(0);
+  const [statusMessage, setStatusMessage] = useState("");
+  // compVisibleはtext + progressの表示条件
+  const [compVisible, setCompVisible] = useState(false);
+  const [textVisible, setTextVisible] = useState(false);
+  const [progressVisible, setProgressVisible] = useState(false);
+
+  // error or notify dialog
+  const [isErrorDialogVisible, setErrorDialogVisible] = useState(false);
+  const [isNotifyDialogVisible, setNotifyDialogVisible] = useState(false);
+  const [dialogText, setDialogText] = useState('')
 
   const getInstance = useCallback((instance) => {
     refAnimationInstance.current = instance;
@@ -185,9 +201,29 @@ const LogedIn = ({ token, user, setToken, userName, diff }) => {
   }, [opened]);
 
   const handleGrowGrass = () => {
+    // progressbar 表示
+    setCompVisible(true);
+    setTextVisible(true);
+    setProgressVisible(true);
+    setStatusMessage("コミット中...");
+    setPercent(0);
     console.log("called methods");
     console.log("メッツ量 :" + mets[0]);
-    createCommitApi(userInfo.token, userName, userInfo.repo, mets[0]);
+    createCommitApi(
+      userInfo.token,
+      userName,
+      userInfo.repo,
+      mets[0],
+      setPercent,
+      // NOTE 非同期処理のタイミングがうまくいかないのでset関数を直接渡してnavbarの表示を変える
+      setStatusMessage,
+      setErrorDialogVisible,
+      setNotifyDialogVisible,
+      setDialogText
+    ).catch((msg) => {
+      console.log(msg);
+      setStatusMessage(msg);
+    });
   };
 
   useEffect(() => {
@@ -212,6 +248,18 @@ const LogedIn = ({ token, user, setToken, userName, diff }) => {
                   <Text>{user.displayName}</Text>
                 </Group>
                 <Group>
+                  {/* プログレスバー */}
+                  {compVisible ? (
+                    <Progress
+                      value={percent}
+                      statusMessage={statusMessage}
+                      textVisible={textVisible}
+                      progressVisible={progressVisible}
+                    />
+                  ) : (
+                    ""
+                  )}
+
                   <ActionIcon
                     onClick={() => {
                       setOpened(true);
@@ -251,6 +299,13 @@ const LogedIn = ({ token, user, setToken, userName, diff }) => {
             setOpened={setOpened}
             userInfo={userInfo}
             setUserInfo={setUserInfo}
+            statusMessage={statusMessage}
+            setStatusMessage={setStatusMessage}
+            setCompVisible={setCompVisible}
+            setTextVisible={setTextVisible}
+            setErrorDialogVisible={setErrorDialogVisible}
+            setNotifyDialogVisible={setNotifyDialogVisible}
+            setDialogText={setDialogText}
           />
         </Modal>
 
@@ -273,6 +328,8 @@ const LogedIn = ({ token, user, setToken, userName, diff }) => {
                 />
               </div>
               {/* </div> */}
+
+
 
               <div className="grid grid-cols-2 grid-rows-1">
                 <div className="grid grid-cols-1 grid-rows-2 place-content-center h-fit gap-2">
@@ -304,6 +361,8 @@ const LogedIn = ({ token, user, setToken, userName, diff }) => {
                   </div>
                 </div>
               </div>
+
+  
               {/* </div> */}
               <Button
                 onClick={() => {
@@ -345,6 +404,26 @@ const LogedIn = ({ token, user, setToken, userName, diff }) => {
         </div>
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
+         {/* </Container> */}
+        {/* dialog */}
+        {/* NOTE: エラーダイアログとノティファイダイアログは同時には表示しない*/}
+        {isErrorDialogVisible && !isNotifyDialogVisible ? (
+          <ErrorDialog
+            setErrorDialogVisible={setErrorDialogVisible}
+            text={dialogText}
+          />
+        ) : (
+          ""
+        )}
+        {isNotifyDialogVisible && !isErrorDialogVisible ? (
+          <NotifyDialog
+            setNotifyDialogVisible={setNotifyDialogVisible}
+            text={dialogText}
+          />
+        ) : (
+          ""
+        )}
+
       </AppShell>
     </>
   );
