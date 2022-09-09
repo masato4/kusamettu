@@ -386,8 +386,9 @@ const LogedIn = ({ token, user, setToken, userName, diff }) => {
                   startAnimation();
                   setTimeout(pauseAnimation, 2000);
                   addMets();
-                  handleGrowGrass();
+
                   getMets();
+                  handleGrowGrass();
                 }}
                 radius="md"
                 className="mx-[calc(30%)]"
