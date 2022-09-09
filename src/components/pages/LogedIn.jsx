@@ -139,6 +139,9 @@ const LogedIn = ({ token, user, setToken, userName }) => {
       timestamp: serverTimestamp(),
       calorie: calorie,
     });
+    updateDoc(doc(db, "users", user.uid), {
+      calorie: increment(calorie),
+    });
   };
   // metsをfirestoreから取得して、日付ごとに集計
   const getMets = async () => {
@@ -213,6 +216,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                         setToken("");
                       });
                     }}
+                    color="green"
                   >
                     Logout
                   </Button>
@@ -297,6 +301,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                 }}
                 className="mx-[calc(30%)] mt-[calc(5%)]"
                 radius="md"
+                color="green"
               >
                 カロリーの計算
               </Button>
@@ -314,9 +319,11 @@ const LogedIn = ({ token, user, setToken, userName }) => {
                   addMets();
                   handleGrowGrass();
                   getMets();
+                  check();
                 }}
                 radius="md"
                 className="mx-[calc(30%)]"
+                color="green"
               >
                 送信して竹をGET！
               </Button>
@@ -324,7 +331,7 @@ const LogedIn = ({ token, user, setToken, userName }) => {
             <Segmented userName={userName} log={log} values={value} />
           </div>
 
-          <PandaYoko></PandaYoko>
+          <PandaYoko calorie={userInfo.calorie}></PandaYoko>
         </div>
 
         <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />

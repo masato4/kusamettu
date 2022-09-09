@@ -1,10 +1,9 @@
 import "./styles.css";
 import { Scene, SceneItem } from "react-scenejs";
 import { BambooRender } from "./BambooRender";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-
-export function PandaYoko({ diff, calorie }) {
+export function PandaYoko({ calorie }) {
   const [bamboo, setBamboo] = useState(0);
   const [bambooX, setBambooX] = useState([]);
   const keyframes = {
@@ -105,18 +104,33 @@ export function PandaYoko({ diff, calorie }) {
         setBamboo(0)
     }else{
         setBamboo(1)
+
     }
     console.log([...Array(e.target.value)]);
     const x = Math.floor(parseInt(e.target.value) / 14);
     let aaa = [];
     for (let i = 0; i < x; i++) {
       aaa.push(14);
-
     }
     aaa.push(parseInt(e.target.value) % 14);
     setBambooX(aaa);
     console.log(aaa);
   };
+  useEffect(() => {
+    if (Math.floor(calorie / 5) == 0) {
+      setBamboo(0);
+    } else {
+      setBamboo(1);
+    }
+    const x = Math.floor(parseInt(Math.floor(calorie / 5)) / 14);
+    let aaa = [];
+    for (let i = 0; i < x; i++) {
+      aaa.push(14);
+    }
+    aaa.push(parseInt(Math.floor(calorie / 5)) % 14);
+    setBambooX(aaa);
+    console.log(aaa);
+  }, []);
 
     return (
 
@@ -159,6 +173,7 @@ export function PandaYoko({ diff, calorie }) {
                         className="min-h-screen"
                     >
                         {/* <div className="container min-h-[calc(100vh)]">
+
 
               {bamboo.map((x, i) =>{
                 return <PandaYoko offset={i}></PandaYoko>
@@ -209,16 +224,34 @@ export function PandaYoko({ diff, calorie }) {
                                     </div>
                                 </div>
                             </div>
+
                             </div>
+                          </div>
                         </div>
-                    </Scene>
-                    : 
-                    <div className="relative h-[calc(100vh-115px)]">
-                        <img src={"../../../public/deadpanda.png"} className="absolute left-[calc(50%)] bottom-[60px] w-[calc(50%)] translate-x-[calc(-50%)]" alt="" />
+                      </div>
+                      <div class="head front">
+                        <div class="mouth"></div>
+                        <div class="nose">
+                          <div class="mustache left"></div>
+                          <div class="mustache right"></div>
+                        </div>
+                      </div>
                     </div>
-                    }
-                    </div>
+                  </div>
                 </div>
+              </div>
+            </Scene>
+          ) : (
+            <div className="relative h-[calc(100vh-115px)]">
+              <img
+                src={"../../../public/deadpanda.png"}
+                className="absolute left-[calc(50%)] bottom-[60px] w-[calc(50%)] translate-x-[calc(-50%)]"
+                alt=""
+              />
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 }
