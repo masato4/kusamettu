@@ -46,7 +46,7 @@ export default async function growGrassToGithub(
         }
 
         // 進捗を更新する関数
-        const percent = ((repeatNum) / localMetsNum) * 100;
+        const percent = (repeatNum / localMetsNum) * 100;
         console.log("進捗 :" + percent + "%");
         setPercent(percent);
         gitCommitPush({
@@ -63,8 +63,8 @@ export default async function growGrassToGithub(
       } else {
         console.log("successful commit automation");
         // 最後に無理やり100パーセントにする
-        setPercent(100)
-        setStatusMessage('草生やしたったわwwwwwww')
+        setPercent(100);
+        setStatusMessage("草生やしたったわwwwwwww");
         repeatNum = 1;
         clearInterval(id);
         setNotifyDialogVisible(true);
@@ -75,6 +75,9 @@ export default async function growGrassToGithub(
   } catch (error) {
     console.error(error);
     setErrorDialogVisible(true);
+    setStatusMessage(
+      "コミットを生成するのに失敗しました。時間を開けて再度お試しください。"
+    );
     setDialogText(
       "コミットを生成するのに失敗しました。時間を開けて再度お試しください。\ndetail: " +
         error
