@@ -128,9 +128,9 @@ export function PandaYoko({ calorie, user }) {
     console.log(aaa);
   };
   useEffect(() => {
-
     getDoc(doc(db, "users", user.uid)).then((data) => {
       data.exists() && setCal(data.data().calories);
+      data.exists() && setName(data.data().pandaName);
     });
     if (Math.floor(cal / 5) == 0) {
       setBamboo(0);
